@@ -9,7 +9,8 @@ import {
   Home,
   Building2,
   FileText,
-  PlusCircle
+  PlusCircle,
+  ShieldCheck
 } from 'lucide-react'
 
 // شعار الهيئة العامة للعقار
@@ -42,7 +43,7 @@ const RegaLogo = ({ className }) => (
   </svg>
 )
 
-function Footer({ onShowCertificate }) {
+function Footer({ onShowCertificate, onNavigate }) {
   return (
     <footer className="bg-primary-950 text-white mt-auto border-t border-gold-500/20">
       <div className="container mx-auto px-4 py-12">
@@ -109,6 +110,15 @@ function Footer({ onShowCertificate }) {
                   <PlusCircle className="w-4 h-4" />
                   <span>إضافة عقار</span>
                 </a>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('admin')}
+                  className="flex items-center gap-2 text-gray-400 hover:text-gold-400 transition-colors"
+                >
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>لوحة التحكم</span>
+                </button>
               </li>
             </ul>
           </div>

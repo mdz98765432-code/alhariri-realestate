@@ -8,6 +8,7 @@ import AddPropertyPage from './pages/AddPropertyPage'
 import CreateContractPage from './pages/CreateContractPage'
 import ContractsPage from './pages/ContractsPage'
 import ApprovalsPage from './pages/ApprovalsPage'
+import AdminPage from './pages/AdminPage'
 import PaymentModal from './components/PaymentModal'
 import CertificateModal from './components/CertificateModal'
 
@@ -211,6 +212,15 @@ function App() {
             onDelete={deleteProperty}
           />
         )
+      case 'admin':
+        return (
+          <AdminPage
+            properties={properties}
+            onApprove={approveProperty}
+            onReject={rejectProperty}
+            onDelete={deleteProperty}
+          />
+        )
       default:
         return <HomePage properties={approvedProperties} onNavigate={setCurrentPage} />
     }
@@ -224,7 +234,7 @@ function App() {
         {renderPage()}
       </main>
 
-      <Footer onShowCertificate={openCertificateModal} />
+      <Footer onShowCertificate={openCertificateModal} onNavigate={setCurrentPage} />
 
       {/* زر الواتساب العائم */}
       <WhatsAppFloatingButton />
