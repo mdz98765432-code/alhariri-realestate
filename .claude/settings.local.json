@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm run dev:*)",
+      "Bash(start http://localhost:8000)",
+      "Bash(powershell -Command \"Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.Screen]::PrimaryScreen | ForEach-Object { $bitmap = New-Object System.Drawing.Bitmap\\($_Bounds.Width, $_Bounds.Height\\); $graphics = [System.Drawing.Graphics]::FromImage\\($bitmap\\); $graphics.CopyFromScreen\\($_Bounds.Location, [System.Drawing.Point]::Empty, $_Bounds.Size\\); $bitmap.Save\\(''C:\\\\Users\\\\Rayan\\\\OneDrive\\\\Desktop\\\\Rayrealstate\\\\screenshot.png''\\); }\")",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\Rayan\\\\OneDrive\\\\Desktop\\\\Rayrealstate\\\\take-screenshot.ps1\")",
+      "Bash(curl:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -Command \"\nAdd-Type -AssemblyName System.Windows.Forms\nAdd-Type -AssemblyName System.Drawing\n\n# فتح المتصفح\nStart-Process ''http://localhost:8000''\n\n# انتظار تحميل الصفحة\nStart-Sleep -Seconds 4\n\n# أخذ لقطة شاشة\n[System.Windows.Forms.Screen]::PrimaryScreen | ForEach-Object {\n    $bitmap = New-Object System.Drawing.Bitmap\\($_.Bounds.Width, $_.Bounds.Height\\)\n    $graphics = [System.Drawing.Graphics]::FromImage\\($bitmap\\)\n    $graphics.CopyFromScreen\\($_.Bounds.Location, [System.Drawing.Point]::Empty, $_.Bounds.Size\\)\n    $bitmap.Save\\(''C:\\\\Users\\\\Rayan\\\\OneDrive\\\\Desktop\\\\Rayrealstate\\\\screenshot.png'', [System.Drawing.Imaging.ImageFormat]::Png\\)\n    $graphics.Dispose\\(\\)\n    $bitmap.Dispose\\(\\)\n}\n\nWrite-Host ''Screenshot saved successfully!''\n\")",
+      "Bash(ls:*)",
+      "Bash(copy:*)",
+      "Bash(cmd.exe /c \"copy \"\"C:\\\\Users\\\\Rayan\\\\OneDrive\\\\Desktop\\\\رخصة فال مجدده.pdf\"\" \"\"C:\\\\Users\\\\Rayan\\\\OneDrive\\\\Desktop\\\\Rayrealstate\\\\public\\\\fal-license.pdf\"\"\")",
+      "Bash(cmd.exe /c \"dir \"\"C:\\\\Users\\\\Rayan\\\\OneDrive\\\\Desktop\\\\*.pdf\"\"\")",
+      "Bash(cmd.exe:*)",
+      "Bash(powershell.exe -Command \"Get-ChildItem ''C:\\\\Users\\\\Rayan\\\\OneDrive\\\\Desktop'' -Filter ''*.pdf'' | Select-Object Name\")",
+      "Bash(powershell.exe:*)",
+      "Bash(timeout:*)",
+      "Bash(npm run build:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

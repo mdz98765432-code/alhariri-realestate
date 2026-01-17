@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: 'Tajawal', sans-serif;
+}
+
+body {
+  direction: rtl;
+  text-align: right;
+  background: linear-gradient(135deg, #1a1a1a 0%, #252525 50%, #1a1a1a 100%);
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4AF37;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b8982f;
+}
+
+/* RTL Support */
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Animation for modals */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Card hover effects */
+.property-card {
+  transition: all 0.3s ease;
+  background: linear-gradient(145deg, #252525 0%, #1a1a1a 100%);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.property-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(212, 175, 55, 0.15), 0 8px 16px rgba(0, 0, 0, 0.3);
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+/* Button styles */
+.btn-primary {
+  @apply bg-gold-500 hover:bg-gold-600 text-black font-medium py-2 px-4 rounded-lg transition-all duration-200;
+}
+
+.btn-secondary {
+  @apply bg-primary-700 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 border border-gold-500/30;
+}
+
+.btn-success {
+  @apply bg-success-500 hover:bg-success-600 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200;
+}
+
+.btn-danger {
+  @apply bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200;
+}
+
+/* Form inputs - Dark theme */
+.form-input {
+  @apply w-full px-4 py-3 bg-primary-800 border border-primary-600 rounded-lg focus:ring-2 focus:ring-gold-400 focus:border-gold-500 outline-none transition-all duration-200 text-white placeholder-gray-400;
+}
+
+.form-select {
+  @apply w-full px-4 py-3 bg-primary-800 border border-primary-600 rounded-lg focus:ring-2 focus:ring-gold-400 focus:border-gold-500 outline-none transition-all duration-200 text-white;
+}
+
+.form-label {
+  @apply block text-gold-400 font-medium mb-2;
+}
+
+/* WhatsApp floating button */
+.whatsapp-float {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  animation: pulse 2s infinite;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 30px rgba(37, 211, 102, 0.6);
+  }
+  100% {
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+  }
+}
