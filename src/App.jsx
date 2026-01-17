@@ -7,6 +7,7 @@ import PropertiesPage from './pages/PropertiesPage'
 import AddPropertyPage from './pages/AddPropertyPage'
 import CreateContractPage from './pages/CreateContractPage'
 import ContractsPage from './pages/ContractsPage'
+import ApprovalsPage from './pages/ApprovalsPage'
 import PaymentModal from './components/PaymentModal'
 import CertificateModal from './components/CertificateModal'
 
@@ -42,7 +43,8 @@ const initialProperties = [
     bathrooms: 2,
     area: 180,
     description: 'شقة فاخرة مجددة بالكامل في موقع متميز، قريبة من جميع الخدمات. تتميز بإطلالة رائعة وتشطيبات عالية الجودة.',
-    image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop'
+    image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop',
+    status: 'approved'
   },
   {
     id: 2,
@@ -55,7 +57,8 @@ const initialProperties = [
     bathrooms: 4,
     area: 450,
     description: 'فيلا عصرية فاخرة بتصميم معماري حديث، حديقة خاصة ومسبح. تقع في حي راقٍ وهادئ مع جميع الخدمات.',
-    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&h=600&fit=crop'
+    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&h=600&fit=crop',
+    status: 'approved'
   }
 ]
 
@@ -76,10 +79,27 @@ function App() {
     const newProperty = {
       ...property,
       id: Date.now(),
-      image: property.image || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop'
+      image: property.image || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop',
+      status: 'pending'
     }
     setProperties([...properties, newProperty])
     setCurrentPage('properties')
+    alert('تم إضافة العقار بنجاح! سيظهر في الموقع بعد موافقة الإدارة.')
+  }
+
+  // دوال إدارة الموافقات
+  const approveProperty = (id) => {
+    setProperties(properties.map(p =>
+      p.id === id ? { ...p, status: 'approved' } : p
+    ))
+  }
+
+  const rejectProperty = (id) => {
+    if (confirm('هل أنت متأكد من رفض هذا العقار؟')) {
+      setProperties(properties.map(p =>
+        p.id === id ? { ...p, status: 'rejected' } : p
+      ))
+    }
   }
 
   const updateProperty = (updatedProperty) => {
@@ -130,13 +150,17 @@ function App() {
     setCurrentPage('addProperty')
   }
 
+  // فلترة العقارات المعتمدة فقط للعرض العام
+  const approvedProperties = properties.filter(p => p.status === 'approved')
+  const pendingProperties = properties.filter(p => p.status === 'pending')
+
   // عرض الصفحة الحالية
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
         return (
           <HomePage
-            properties={properties}
+            properties={approvedProperties}
             onNavigate={setCurrentPage}
             onPayment={openPaymentModal}
             onCreateContract={navigateToContract}
@@ -145,7 +169,7 @@ function App() {
       case 'properties':
         return (
           <PropertiesPage
-            properties={properties}
+            properties={approvedProperties}
             onDelete={deleteProperty}
             onEdit={navigateToEdit}
             onPayment={openPaymentModal}
@@ -167,7 +191,7 @@ function App() {
       case 'createContract':
         return (
           <CreateContractPage
-            properties={properties}
+            properties={approvedProperties}
             selectedProperty={selectedProperty}
             onAdd={addContract}
             onCancel={() => setCurrentPage('properties')}
@@ -177,8 +201,18 @@ function App() {
         return (
           <ContractsPage contracts={contracts} />
         )
+      case 'approvals':
+        return (
+          <ApprovalsPage
+            properties={properties}
+            pendingCount={pendingProperties.length}
+            onApprove={approveProperty}
+            onReject={rejectProperty}
+            onDelete={deleteProperty}
+          />
+        )
       default:
-        return <HomePage properties={properties} onNavigate={setCurrentPage} />
+        return <HomePage properties={approvedProperties} onNavigate={setCurrentPage} />
     }
   }
 
