@@ -49,7 +49,7 @@ function AdminPage() {
     image: ''
   })
 
-  const ADMIN_PASSWORD = 'Rayan@2024'
+  const ADMIN_PASSWORD = 'Rayan@0505@Eyad'
 
   const propertyTypes = [
     { value: 'apartment', label: 'شقة' },
