@@ -64,20 +64,22 @@ const defaultProperties = [
 // دالة لتحميل العقارات من localStorage
 const loadProperties = () => {
   try {
-    const saved = localStorage.getItem('alhariri_properties')
+    const saved = localStorage.getItem('properties')
     if (saved) {
       return JSON.parse(saved)
     }
   } catch (error) {
     console.error('Error loading properties:', error)
   }
+  // إذا لم توجد عقارات، احفظ الافتراضية
+  localStorage.setItem('properties', JSON.stringify(defaultProperties))
   return defaultProperties
 }
 
 // دالة لحفظ العقارات في localStorage
 const saveProperties = (properties) => {
   try {
-    localStorage.setItem('alhariri_properties', JSON.stringify(properties))
+    localStorage.setItem('properties', JSON.stringify(properties))
   } catch (error) {
     console.error('Error saving properties:', error)
   }
@@ -98,6 +100,42 @@ function App() {
   useEffect(() => {
     saveProperties(properties)
   }, [properties])
+
+  // الاستماع لتغييرات localStorage من صفحة الإدارة
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const saved = localStorage.getItem('properties')
+      if (saved) {
+        try {
+          setProperties(JSON.parse(saved))
+        } catch (e) {
+          console.error('Error parsing properties:', e)
+        }
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+
+    // أيضاً نتحقق عند التركيز على النافذة
+    const handleFocus = () => {
+      const saved = localStorage.getItem('properties')
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved)
+          setProperties(parsed)
+        } catch (e) {
+          console.error('Error parsing properties:', e)
+        }
+      }
+    }
+
+    window.addEventListener('focus', handleFocus)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('focus', handleFocus)
+    }
+  }, [])
 
   // دوال إدارة العقارات (للمدير فقط)
   const addProperty = (property) => {
@@ -176,14 +214,7 @@ function App() {
             />
           } />
           <Route path="/contracts" element={<ContractsPage contracts={contracts} />} />
-          <Route path="/admin" element={
-            <AdminPage
-              properties={properties}
-              onAdd={addProperty}
-              onUpdate={updateProperty}
-              onDelete={deleteProperty}
-            />
-          } />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </main>
 
