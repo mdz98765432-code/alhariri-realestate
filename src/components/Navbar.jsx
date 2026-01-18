@@ -1,4 +1,4 @@
-import { Home, FileText, PlusCircle, Menu, X, Building2 } from 'lucide-react'
+import { Home, PlusCircle, Menu, X, Building2 } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -9,7 +9,6 @@ function Navbar() {
   const navItems = [
     { path: '/', label: 'الرئيسية', icon: Home },
     { path: '/properties', label: 'العقارات', icon: Building2 },
-    { path: '/contracts', label: 'العقود', icon: FileText },
     { path: '/add', label: 'إضافة عقار', icon: PlusCircle },
   ]
 
