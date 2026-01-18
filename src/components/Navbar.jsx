@@ -1,29 +1,26 @@
 import { Home, FileText, PlusCircle, Menu, X, Building2 } from 'lucide-react'
 import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
-function Navbar({ currentPage, onNavigate }) {
+function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const location = useLocation()
 
   const navItems = [
-    { id: 'home', label: 'الرئيسية', icon: Home },
-    { id: 'properties', label: 'العقارات', icon: Building2 },
-    { id: 'contracts', label: 'العقود', icon: FileText },
-    { id: 'addProperty', label: 'إضافة عقار', icon: PlusCircle },
+    { path: '/', label: 'الرئيسية', icon: Home },
+    { path: '/properties', label: 'العقارات', icon: Building2 },
+    { path: '/contracts', label: 'العقود', icon: FileText },
+    { path: '/add', label: 'إضافة عقار', icon: PlusCircle },
   ]
-
-  const handleNavigate = (pageId) => {
-    onNavigate(pageId)
-    setMobileMenuOpen(false)
-  }
 
   return (
     <nav className="bg-primary-900 text-white shadow-lg sticky top-0 z-50 border-b border-gold-500/20">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* الشعار */}
-          <div
-            className="flex items-center gap-3 cursor-pointer"
-            onClick={() => handleNavigate('home')}
+          <Link
+            to="/"
+            className="flex items-center gap-3"
           >
             <div className="bg-gold-500 p-2 rounded-lg">
               <Building2 className="w-6 h-6 text-black" />
@@ -32,17 +29,17 @@ function Navbar({ currentPage, onNavigate }) {
               <span className="text-lg font-bold leading-tight text-gold-400">ALHARIRI</span>
               <span className="text-xs text-gray-400">REAL ESTATE</span>
             </div>
-          </div>
+          </Link>
 
           {/* قائمة التنقل - سطح المكتب */}
           <div className="hidden md:flex items-center gap-1">
             {navItems.map((item) => {
               const Icon = item.icon
-              const isActive = currentPage === item.id
+              const isActive = location.pathname === item.path
               return (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavigate(item.id)}
+                <Link
+                  key={item.path}
+                  to={item.path}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${
                     isActive
                       ? 'bg-gold-500 text-black font-medium'
@@ -51,7 +48,7 @@ function Navbar({ currentPage, onNavigate }) {
                 >
                   <Icon className="w-5 h-5" />
                   <span>{item.label}</span>
-                </button>
+                </Link>
               )
             })}
           </div>
@@ -74,11 +71,12 @@ function Navbar({ currentPage, onNavigate }) {
           <div className="md:hidden pb-4 animate-slideUp">
             {navItems.map((item) => {
               const Icon = item.icon
-              const isActive = currentPage === item.id
+              const isActive = location.pathname === item.path
               return (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavigate(item.id)}
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-all duration-200 ${
                     isActive
                       ? 'bg-gold-500 text-black font-medium'
@@ -87,7 +85,7 @@ function Navbar({ currentPage, onNavigate }) {
                 >
                   <Icon className="w-5 h-5" />
                   <span>{item.label}</span>
-                </button>
+                </Link>
               )
             })}
           </div>

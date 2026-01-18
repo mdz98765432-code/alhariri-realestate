@@ -12,6 +12,7 @@ import {
   PlusCircle,
   ShieldCheck
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 // شعار الهيئة العامة للعقار
 const RegaLogo = ({ className }) => (
@@ -43,7 +44,7 @@ const RegaLogo = ({ className }) => (
   </svg>
 )
 
-function Footer({ onShowCertificate, onNavigate }) {
+function Footer({ onShowCertificate }) {
   return (
     <footer className="bg-primary-950 text-white mt-auto border-t border-gold-500/20">
       <div className="container mx-auto px-4 py-12">
@@ -88,37 +89,37 @@ function Footer({ onShowCertificate, onNavigate }) {
             <h3 className="text-lg font-bold mb-4 text-gold-400">روابط سريعة</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="flex items-center gap-2 text-gray-400 hover:text-gold-400 transition-colors">
+                <Link to="/" className="flex items-center gap-2 text-gray-400 hover:text-gold-400 transition-colors">
                   <Home className="w-4 h-4" />
                   <span>الصفحة الرئيسية</span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="flex items-center gap-2 text-gray-400 hover:text-gold-400 transition-colors">
+                <Link to="/properties" className="flex items-center gap-2 text-gray-400 hover:text-gold-400 transition-colors">
                   <Building2 className="w-4 h-4" />
                   <span>العقارات</span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="flex items-center gap-2 text-gray-400 hover:text-gold-400 transition-colors">
+                <Link to="/contracts" className="flex items-center gap-2 text-gray-400 hover:text-gold-400 transition-colors">
                   <FileText className="w-4 h-4" />
                   <span>العقود</span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="flex items-center gap-2 text-gray-400 hover:text-gold-400 transition-colors">
+                <Link to="/add" className="flex items-center gap-2 text-gray-400 hover:text-gold-400 transition-colors">
                   <PlusCircle className="w-4 h-4" />
                   <span>إضافة عقار</span>
-                </a>
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('admin')}
+                <Link
+                  to="/admin"
                   className="flex items-center gap-2 text-gray-500 hover:text-gold-400 transition-colors text-sm"
                 >
                   <ShieldCheck className="w-4 h-4" />
                   <span>دخول المدير</span>
-                </button>
+                </Link>
               </li>
             </ul>
           </div>

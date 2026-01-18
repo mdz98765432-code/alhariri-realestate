@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Lock, LogOut, Trash2, Edit2, Plus, Building2, MapPin, Bed, Bath, Maximize, Eye, EyeOff, ShieldCheck, X, Save } from 'lucide-react'
 
 function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
@@ -14,6 +14,7 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
     price: '',
     type: 'rent',
     category: 'residential',
+    propertyType: 'apartment',
     bedrooms: '',
     bathrooms: '',
     area: '',
@@ -22,6 +23,14 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
   })
 
   const ADMIN_PASSWORD = 'admin123'
+
+  // التحقق من حالة الدخول عند تحميل الصفحة
+  useEffect(() => {
+    const loggedIn = sessionStorage.getItem('adminLoggedIn')
+    if (loggedIn === 'true') {
+      setIsLoggedIn(true)
+    }
+  }, [])
 
   const propertyTypes = [
     { value: 'apartment', label: 'شقة' },
@@ -34,6 +43,7 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
   const handleLogin = (e) => {
     e.preventDefault()
     if (password === ADMIN_PASSWORD) {
+      sessionStorage.setItem('adminLoggedIn', 'true')
       setIsLoggedIn(true)
       setError('')
     } else {
@@ -42,6 +52,7 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
   }
 
   const handleLogout = () => {
+    sessionStorage.removeItem('adminLoggedIn')
     setIsLoggedIn(false)
     setPassword('')
   }
@@ -53,6 +64,7 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
       price: '',
       type: 'rent',
       category: 'residential',
+      propertyType: 'apartment',
       bedrooms: '',
       bathrooms: '',
       area: '',
@@ -102,6 +114,7 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
       price: property.price.toString(),
       type: property.type,
       category: property.category,
+      propertyType: property.propertyType || 'apartment',
       bedrooms: property.bedrooms.toString(),
       bathrooms: property.bathrooms.toString(),
       area: property.area.toString(),
@@ -126,13 +139,24 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-primary-900 flex items-center justify-center py-8 px-4">
-        <div className="bg-primary-800 rounded-2xl p-8 w-full max-w-md border border-primary-700">
+        <div className="bg-primary-800 rounded-2xl p-8 w-full max-w-md border border-primary-700 shadow-2xl">
+          {/* شعار الموقع */}
           <div className="text-center mb-8">
-            <div className="bg-gold-500/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <ShieldCheck className="w-10 h-10 text-gold-400" />
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <div className="bg-gold-500 p-3 rounded-xl">
+                <Building2 className="w-8 h-8 text-black" />
+              </div>
+              <div className="flex flex-col text-right">
+                <span className="text-xl font-bold text-gold-400">ALHARIRI</span>
+                <span className="text-sm text-gray-400">REAL ESTATE</span>
+              </div>
             </div>
-            <h1 className="text-2xl font-bold text-white mb-2">لوحة التحكم</h1>
-            <p className="text-gray-400">أدخل كلمة المرور للوصول</p>
+
+            <div className="bg-gold-500/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border border-gold-500/30">
+              <Lock className="w-8 h-8 text-gold-400" />
+            </div>
+            <h1 className="text-2xl font-bold text-white mb-2">دخول المدير</h1>
+            <p className="text-gray-400">أدخل كلمة المرور للوصول إلى لوحة التحكم</p>
           </div>
 
           <form onSubmit={handleLogin}>
@@ -145,6 +169,7 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-primary-700 border border-primary-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors"
                   placeholder="أدخل كلمة المرور"
+                  autoFocus
                 />
                 <button
                   type="button"
@@ -155,7 +180,10 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
                 </button>
               </div>
               {error && (
-                <p className="text-red-400 text-sm mt-2">{error}</p>
+                <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
+                  <X className="w-4 h-4" />
+                  {error}
+                </p>
               )}
             </div>
 
@@ -163,7 +191,7 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
               type="submit"
               className="w-full bg-gold-500 hover:bg-gold-600 text-black font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
             >
-              <Lock className="w-5 h-5" />
+              <ShieldCheck className="w-5 h-5" />
               دخول
             </button>
           </form>
@@ -250,9 +278,22 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                   <div>
-                    <label className="block text-gray-300 text-sm mb-2">نوع العرض</label>
+                    <label className="block text-gray-300 text-sm mb-2">نوع العقار</label>
+                    <select
+                      name="propertyType"
+                      value={formData.propertyType}
+                      onChange={handleChange}
+                      className="w-full bg-primary-700 border border-primary-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500"
+                    >
+                      {propertyTypes.map(pt => (
+                        <option key={pt.value} value={pt.value}>{pt.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-gray-300 text-sm mb-2">الغرض</label>
                     <select
                       name="type"
                       value={formData.type}

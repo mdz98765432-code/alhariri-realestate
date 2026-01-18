@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import { MessageCircle } from 'lucide-react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -83,7 +84,7 @@ const saveProperties = (properties) => {
 }
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home')
+  const navigate = useNavigate()
   const [properties, setProperties] = useState(loadProperties)
   const [contracts, setContracts] = useState([])
   const [selectedProperty, setSelectedProperty] = useState(null)
@@ -126,7 +127,7 @@ function App() {
       createdAt: new Date().toLocaleDateString('ar-SA')
     }
     setContracts([...contracts, newContract])
-    setCurrentPage('contracts')
+    navigate('/contracts')
   }
 
   // دوال النوافذ المنبثقة
@@ -143,69 +144,50 @@ function App() {
   // التنقل مع اختيار عقار للعقد
   const navigateToContract = (property) => {
     setSelectedProperty(property)
-    setCurrentPage('createContract')
-  }
-
-  // عرض الصفحة الحالية
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home':
-        return (
-          <HomePage
-            properties={properties}
-            onNavigate={setCurrentPage}
-            onPayment={openPaymentModal}
-            onCreateContract={navigateToContract}
-          />
-        )
-      case 'properties':
-        return (
-          <PropertiesPage
-            properties={properties}
-            onPayment={openPaymentModal}
-            onCreateContract={navigateToContract}
-          />
-        )
-      case 'addProperty':
-        return (
-          <AddPropertyPage />
-        )
-      case 'createContract':
-        return (
-          <CreateContractPage
-            properties={properties}
-            selectedProperty={selectedProperty}
-            onAdd={addContract}
-            onCancel={() => setCurrentPage('properties')}
-          />
-        )
-      case 'contracts':
-        return (
-          <ContractsPage contracts={contracts} />
-        )
-      case 'admin':
-        return (
-          <AdminPage
-            properties={properties}
-            onAdd={addProperty}
-            onUpdate={updateProperty}
-            onDelete={deleteProperty}
-          />
-        )
-      default:
-        return <HomePage properties={properties} onNavigate={setCurrentPage} />
-    }
+    navigate('/create-contract')
   }
 
   return (
     <div className="min-h-screen flex flex-col bg-primary-900">
-      <Navbar currentPage={currentPage} onNavigate={setCurrentPage} />
+      <Navbar />
 
       <main className="flex-grow">
-        {renderPage()}
+        <Routes>
+          <Route path="/" element={
+            <HomePage
+              properties={properties}
+              onPayment={openPaymentModal}
+              onCreateContract={navigateToContract}
+            />
+          } />
+          <Route path="/properties" element={
+            <PropertiesPage
+              properties={properties}
+              onPayment={openPaymentModal}
+              onCreateContract={navigateToContract}
+            />
+          } />
+          <Route path="/add" element={<AddPropertyPage />} />
+          <Route path="/create-contract" element={
+            <CreateContractPage
+              properties={properties}
+              selectedProperty={selectedProperty}
+              onAdd={addContract}
+            />
+          } />
+          <Route path="/contracts" element={<ContractsPage contracts={contracts} />} />
+          <Route path="/admin" element={
+            <AdminPage
+              properties={properties}
+              onAdd={addProperty}
+              onUpdate={updateProperty}
+              onDelete={deleteProperty}
+            />
+          } />
+        </Routes>
       </main>
 
-      <Footer onShowCertificate={openCertificateModal} onNavigate={setCurrentPage} />
+      <Footer onShowCertificate={openCertificateModal} />
 
       {/* زر الواتساب العائم */}
       <WhatsAppFloatingButton />

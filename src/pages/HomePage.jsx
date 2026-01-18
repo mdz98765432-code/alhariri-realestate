@@ -1,7 +1,8 @@
 import { Building2, FileText, Megaphone, ArrowLeft } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import PropertyCard from '../components/PropertyCard'
 
-function HomePage({ properties, onNavigate, onPayment, onCreateContract }) {
+function HomePage({ properties, onPayment, onCreateContract }) {
   // عرض أحدث 4 عقارات
   const latestProperties = properties.slice(0, 4)
 
@@ -43,19 +44,19 @@ function HomePage({ properties, onNavigate, onPayment, onCreateContract }) {
               مع عقود إلكترونية موثقة وتسويق عقاري احترافي
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <button
-                onClick={() => onNavigate('properties')}
+              <Link
+                to="/properties"
                 className="bg-gold-500 hover:bg-gold-600 text-black px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2"
               >
                 <span>تصفح العقارات</span>
                 <ArrowLeft className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => onNavigate('addProperty')}
+              </Link>
+              <Link
+                to="/add"
                 className="bg-primary-700 hover:bg-primary-600 text-gold-400 px-8 py-3 rounded-xl font-bold transition-all border border-gold-500/30"
               >
                 إضافة عقار جديد
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -92,13 +93,13 @@ function HomePage({ properties, onNavigate, onPayment, onCreateContract }) {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-gold-400">أحدث العقارات</h2>
-            <button
-              onClick={() => onNavigate('properties')}
+            <Link
+              to="/properties"
               className="text-gold-500 hover:text-gold-400 font-medium flex items-center gap-2"
             >
               <span>عرض الكل</span>
               <ArrowLeft className="w-5 h-5" />
-            </button>
+            </Link>
           </div>
 
           {latestProperties.length > 0 ? (
@@ -119,12 +120,12 @@ function HomePage({ properties, onNavigate, onPayment, onCreateContract }) {
             <div className="text-center py-12 bg-primary-700 rounded-2xl border border-gold-500/20">
               <Building2 className="w-16 h-16 text-gold-500 mx-auto mb-4" />
               <p className="text-gray-400 text-lg">لا توجد عقارات حالياً</p>
-              <button
-                onClick={() => onNavigate('addProperty')}
-                className="mt-4 text-gold-500 hover:text-gold-400 font-medium"
+              <Link
+                to="/add"
+                className="mt-4 text-gold-500 hover:text-gold-400 font-medium inline-block"
               >
                 إضافة عقار جديد
-              </button>
+              </Link>
             </div>
           )}
         </div>

@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { FileText, Save, X, Building, Home, User, Phone, CreditCard, Calendar } from 'lucide-react'
 
-function CreateContractPage({ properties, selectedProperty, onAdd, onCancel }) {
+function CreateContractPage({ properties, selectedProperty, onAdd }) {
+  const navigate = useNavigate()
   const [contractType, setContractType] = useState('residential')
   const [propertyId, setPropertyId] = useState('')
   const [formData, setFormData] = useState({
@@ -432,7 +434,7 @@ function CreateContractPage({ properties, selectedProperty, onAdd, onCancel }) {
             </button>
             <button
               type="button"
-              onClick={onCancel}
+              onClick={() => navigate('/properties')}
               className="flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-500 text-gold-400 py-4 px-6 rounded-xl font-medium transition-colors border border-gold-500/30"
             >
               <X className="w-5 h-5" />
