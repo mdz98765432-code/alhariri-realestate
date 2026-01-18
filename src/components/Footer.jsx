@@ -114,10 +114,10 @@ function Footer({ onShowCertificate, onNavigate }) {
               <li>
                 <button
                   onClick={() => onNavigate('admin')}
-                  className="flex items-center gap-2 text-gray-400 hover:text-gold-400 transition-colors"
+                  className="flex items-center gap-2 text-gray-500 hover:text-gold-400 transition-colors text-sm"
                 >
                   <ShieldCheck className="w-4 h-4" />
-                  <span>لوحة التحكم</span>
+                  <span>دخول المدير</span>
                 </button>
               </li>
             </ul>

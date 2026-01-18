@@ -3,24 +3,12 @@ import {
   Bed,
   Bath,
   Maximize,
-  Eye,
-  Edit,
-  Trash2,
-  FileText,
-  CreditCard,
   Home,
   Building,
   MessageCircle
 } from 'lucide-react'
 
-function PropertyCard({
-  property,
-  onEdit,
-  onDelete,
-  onPayment,
-  onCreateContract,
-  showActions = true
-}) {
+function PropertyCard({ property }) {
   const formatPrice = (price, type) => {
     const formatted = price.toLocaleString('ar-SA')
     if (type === 'rent') {
@@ -32,19 +20,22 @@ function PropertyCard({
   // إنشاء رابط الواتساب مع رسالة جاهزة
   const getWhatsAppLink = () => {
     const phoneNumber = '966550552045'
+    const typeText = property.type === 'rent' ? 'للإيجار' : 'للبيع'
     const categoryText = property.category === 'residential' ? 'سكني' : 'تجاري'
     const priceText = formatPrice(property.price, property.type)
-    const message = `السلام عليكم، أرغب في الاستفسار عن هذا العقار وإنشاء عقد إيجار:
+    const message = `السلام عليكم، أرغب في الاستفسار عن هذا العقار:
 
 📍 اسم العقار: ${property.title}
-🏠 النوع: ${categoryText}
+🏠 النوع: ${categoryText} - ${typeText}
 💰 السعر: ${priceText}
-📌 الموقع: ${property.location}`
+📌 الموقع: ${property.location}
+📐 المساحة: ${property.area} م²
+🛏️ الغرف: ${property.bedrooms} | 🚿 الحمامات: ${property.bathrooms}`
 
     return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
   }
 
-  const handleWhatsAppContract = () => {
+  const handleWhatsApp = () => {
     window.open(getWhatsAppLink(), '_blank')
   }
 
@@ -120,42 +111,14 @@ function PropertyCard({
           {formatPrice(property.price, property.type)}
         </div>
 
-        {/* الأزرار */}
-        {showActions && (
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => onPayment(property)}
-              className="flex-1 flex items-center justify-center gap-2 bg-gold-500 hover:bg-gold-600 text-black py-2 px-3 rounded-lg transition-colors text-sm font-medium"
-            >
-              <CreditCard className="w-4 h-4" />
-              <span>الدفع</span>
-            </button>
-
-            {property.type === 'rent' && (
-              <button
-                onClick={handleWhatsAppContract}
-                className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-3 rounded-lg transition-colors text-sm font-medium"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>عقد إيجار</span>
-              </button>
-            )}
-
-            <button
-              onClick={() => onEdit(property)}
-              className="flex items-center justify-center gap-1 bg-primary-600 hover:bg-primary-500 text-gold-400 py-2 px-3 rounded-lg transition-colors text-sm border border-gold-500/30"
-            >
-              <Edit className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => onDelete(property.id)}
-              className="flex items-center justify-center gap-1 bg-red-600 hover:bg-red-500 text-white py-2 px-3 rounded-lg transition-colors text-sm"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
-          </div>
-        )}
+        {/* زر التواصل */}
+        <button
+          onClick={handleWhatsApp}
+          className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-colors font-medium"
+        >
+          <MessageCircle className="w-5 h-5" />
+          <span>تواصل واتساب</span>
+        </button>
       </div>
     </div>
   )

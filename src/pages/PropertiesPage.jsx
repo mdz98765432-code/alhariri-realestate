@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Building2, Search, Filter } from 'lucide-react'
 import PropertyCard from '../components/PropertyCard'
 
-function PropertiesPage({ properties, onDelete, onEdit, onPayment, onCreateContract }) {
+function PropertiesPage({ properties }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterType, setFilterType] = useState('all')
   const [filterCategory, setFilterCategory] = useState('all')
@@ -21,7 +21,7 @@ function PropertiesPage({ properties, onDelete, onEdit, onPayment, onCreateContr
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gold-400 mb-2">جميع العقارات</h1>
-        <p className="text-gray-400">تصفح وإدارة جميع العقارات المتاحة</p>
+        <p className="text-gray-400">تصفح العقارات المتاحة للإيجار والبيع</p>
       </div>
 
       {/* Search and Filters */}
@@ -83,10 +83,6 @@ function PropertiesPage({ properties, onDelete, onEdit, onPayment, onCreateContr
             <PropertyCard
               key={property.id}
               property={property}
-              onDelete={onDelete}
-              onEdit={onEdit}
-              onPayment={onPayment}
-              onCreateContract={onCreateContract}
             />
           ))}
         </div>

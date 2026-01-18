@@ -1,254 +1,260 @@
-import { useState, useEffect } from 'react'
-import { Building2, Save, X } from 'lucide-react'
+import { useState } from 'react'
+import { Send, User, Phone, Home, MapPin, FileText, Building2 } from 'lucide-react'
 
-function AddPropertyPage({ onAdd, onUpdate, editingProperty, onCancel }) {
+function AddPropertyPage() {
   const [formData, setFormData] = useState({
-    title: '',
-    location: '',
+    advertiserName: '',
+    phoneNumber: '',
+    propertyType: 'apartment',
+    purpose: 'rent',
+    city: '',
+    neighborhood: '',
     price: '',
-    type: 'rent',
-    category: 'residential',
+    area: '',
     bedrooms: '',
     bathrooms: '',
-    area: '',
-    description: '',
-    image: ''
+    description: ''
   })
 
-  const [errors, setErrors] = useState({})
+  const propertyTypes = [
+    { value: 'apartment', label: 'شقة' },
+    { value: 'villa', label: 'فيلا' },
+    { value: 'land', label: 'أرض' },
+    { value: 'shop', label: 'محل تجاري' },
+    { value: 'office', label: 'مكتب' }
+  ]
 
-  // تحميل بيانات العقار عند التعديل
-  useEffect(() => {
-    if (editingProperty) {
-      setFormData({
-        ...editingProperty,
-        price: editingProperty.price.toString(),
-        bedrooms: editingProperty.bedrooms.toString(),
-        bathrooms: editingProperty.bathrooms.toString(),
-        area: editingProperty.area.toString()
-      })
-    }
-  }, [editingProperty])
+  const getPropertyTypeLabel = (value) => {
+    const type = propertyTypes.find(t => t.value === value)
+    return type ? type.label : value
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-    // مسح الخطأ عند الكتابة
-    if (errors[name]) {
-      setErrors({ ...errors, [name]: '' })
-    }
-  }
-
-  const validateForm = () => {
-    const newErrors = {}
-    if (!formData.title.trim()) newErrors.title = 'عنوان العقار مطلوب'
-    if (!formData.location.trim()) newErrors.location = 'الموقع مطلوب'
-    if (!formData.price || formData.price <= 0) newErrors.price = 'السعر يجب أن يكون أكبر من صفر'
-    if (!formData.bedrooms || formData.bedrooms <= 0) newErrors.bedrooms = 'عدد الغرف مطلوب'
-    if (!formData.bathrooms || formData.bathrooms <= 0) newErrors.bathrooms = 'عدد الحمامات مطلوب'
-    if (!formData.area || formData.area <= 0) newErrors.area = 'المساحة مطلوبة'
-    if (!formData.description.trim()) newErrors.description = 'الوصف مطلوب'
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+    setFormData(prev => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (validateForm()) {
-      const propertyData = {
-        ...formData,
-        price: parseFloat(formData.price),
-        bedrooms: parseInt(formData.bedrooms),
-        bathrooms: parseInt(formData.bathrooms),
-        area: parseFloat(formData.area)
-      }
 
-      if (editingProperty) {
-        onUpdate({ ...propertyData, id: editingProperty.id })
-      } else {
-        onAdd(propertyData)
-      }
+    // التحقق من الحقول المطلوبة
+    if (!formData.advertiserName || !formData.phoneNumber) {
+      alert('يرجى إدخال اسم المعلن ورقم الجوال')
+      return
     }
+
+    // تنسيق الرسالة
+    const message = `طلب إضافة عقار جديد:
+----------------------
+اسم المعلن: ${formData.advertiserName}
+رقم الجوال: ${formData.phoneNumber}
+نوع العقار: ${getPropertyTypeLabel(formData.propertyType)}
+الغرض: ${formData.purpose === 'rent' ? 'للإيجار' : 'للبيع'}
+الموقع: ${formData.city} - ${formData.neighborhood}
+السعر: ${formData.price} ريال
+المساحة: ${formData.area} متر
+الغرف: ${formData.bedrooms} | الحمامات: ${formData.bathrooms}
+الوصف: ${formData.description}`
+
+    // فتح واتساب
+    const phoneNumber = '966550552045'
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
+    window.open(whatsappUrl, '_blank')
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gold-400 mb-2">
-            {editingProperty ? 'تعديل العقار' : 'إضافة عقار جديد'}
-          </h1>
-          <p className="text-gray-400">
-            {editingProperty ? 'قم بتعديل بيانات العقار' : 'أدخل تفاصيل العقار الجديد'}
-          </p>
+    <div className="min-h-screen bg-primary-900 py-8">
+      <div className="container mx-auto px-4 max-w-2xl">
+        {/* العنوان */}
+        <div className="text-center mb-8">
+          <div className="bg-gold-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Building2 className="w-8 h-8 text-gold-400" />
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-2">إضافة عقار جديد</h1>
+          <p className="text-gray-400">أدخل بيانات العقار وسنتواصل معك</p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-primary-800 rounded-2xl shadow-lg p-8 border border-gold-500/20">
-          {/* عنوان العقار */}
+        {/* النموذج */}
+        <form onSubmit={handleSubmit} className="bg-primary-800 rounded-2xl p-6 border border-primary-700">
+          {/* معلومات المعلن */}
           <div className="mb-6">
-            <label className="form-label">عنوان العقار *</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              className={`form-input ${errors.title ? 'border-red-500' : ''}`}
-              placeholder="مثال: شقة فاخرة في حي الروضة"
-            />
-            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
+            <h2 className="text-lg font-bold text-gold-400 mb-4 flex items-center gap-2">
+              <User className="w-5 h-5" />
+              معلومات المعلن
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-300 text-sm mb-2">اسم المعلن *</label>
+                <input
+                  type="text"
+                  name="advertiserName"
+                  value={formData.advertiserName}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-primary-700 border border-primary-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors"
+                  placeholder="الاسم الكامل"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-300 text-sm mb-2">رقم الجوال *</label>
+                <input
+                  type="tel"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-primary-700 border border-primary-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors"
+                  placeholder="05xxxxxxxx"
+                  dir="ltr"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* معلومات العقار */}
+          <div className="mb-6">
+            <h2 className="text-lg font-bold text-gold-400 mb-4 flex items-center gap-2">
+              <Home className="w-5 h-5" />
+              معلومات العقار
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-300 text-sm mb-2">نوع العقار</label>
+                <select
+                  name="propertyType"
+                  value={formData.propertyType}
+                  onChange={handleChange}
+                  className="w-full bg-primary-700 border border-primary-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors"
+                >
+                  {propertyTypes.map(type => (
+                    <option key={type.value} value={type.value}>{type.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-gray-300 text-sm mb-2">الغرض</label>
+                <select
+                  name="purpose"
+                  value={formData.purpose}
+                  onChange={handleChange}
+                  className="w-full bg-primary-700 border border-primary-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 transition-colors"
+                >
+                  <option value="rent">للإيجار</option>
+                  <option value="sale">للبيع</option>
+                </select>
+              </div>
+            </div>
           </div>
 
           {/* الموقع */}
           <div className="mb-6">
-            <label className="form-label">الموقع *</label>
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              className={`form-input ${errors.location ? 'border-red-500' : ''}`}
-              placeholder="مثال: حي الروضة، الرياض"
-            />
-            {errors.location && <p className="text-red-500 text-sm mt-1">{errors.location}</p>}
-          </div>
-
-          {/* نوع العرض والتصنيف */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label className="form-label">نوع العرض *</label>
-              <select
-                name="type"
-                value={formData.type}
-                onChange={handleChange}
-                className="form-select"
-              >
-                <option value="rent">للإيجار</option>
-                <option value="sale">للبيع</option>
-              </select>
-            </div>
-            <div>
-              <label className="form-label">التصنيف *</label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                className="form-select"
-              >
-                <option value="residential">سكني</option>
-                <option value="commercial">تجاري</option>
-              </select>
+            <h2 className="text-lg font-bold text-gold-400 mb-4 flex items-center gap-2">
+              <MapPin className="w-5 h-5" />
+              الموقع
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-300 text-sm mb-2">المدينة</label>
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  className="w-full bg-primary-700 border border-primary-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors"
+                  placeholder="مثال: جدة"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-300 text-sm mb-2">الحي</label>
+                <input
+                  type="text"
+                  name="neighborhood"
+                  value={formData.neighborhood}
+                  onChange={handleChange}
+                  className="w-full bg-primary-700 border border-primary-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors"
+                  placeholder="مثال: الروضة"
+                />
+              </div>
             </div>
           </div>
 
-          {/* السعر */}
+          {/* التفاصيل */}
           <div className="mb-6">
-            <label className="form-label">
-              السعر {formData.type === 'rent' ? '(ريال/شهر)' : '(ريال)'} *
-            </label>
-            <input
-              type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              className={`form-input ${errors.price ? 'border-red-500' : ''}`}
-              placeholder="0"
-              min="0"
-            />
-            {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price}</p>}
-          </div>
-
-          {/* المواصفات */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div>
-              <label className="form-label">عدد الغرف *</label>
-              <input
-                type="number"
-                name="bedrooms"
-                value={formData.bedrooms}
-                onChange={handleChange}
-                className={`form-input ${errors.bedrooms ? 'border-red-500' : ''}`}
-                placeholder="0"
-                min="0"
-              />
-              {errors.bedrooms && <p className="text-red-500 text-sm mt-1">{errors.bedrooms}</p>}
+            <h2 className="text-lg font-bold text-gold-400 mb-4 flex items-center gap-2">
+              <FileText className="w-5 h-5" />
+              التفاصيل
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+              <div>
+                <label className="block text-gray-300 text-sm mb-2">السعر (ريال)</label>
+                <input
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleChange}
+                  className="w-full bg-primary-700 border border-primary-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors"
+                  placeholder="0"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-300 text-sm mb-2">المساحة (م²)</label>
+                <input
+                  type="number"
+                  name="area"
+                  value={formData.area}
+                  onChange={handleChange}
+                  className="w-full bg-primary-700 border border-primary-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors"
+                  placeholder="0"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-300 text-sm mb-2">الغرف</label>
+                <input
+                  type="number"
+                  name="bedrooms"
+                  value={formData.bedrooms}
+                  onChange={handleChange}
+                  className="w-full bg-primary-700 border border-primary-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors"
+                  placeholder="0"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-300 text-sm mb-2">الحمامات</label>
+                <input
+                  type="number"
+                  name="bathrooms"
+                  value={formData.bathrooms}
+                  onChange={handleChange}
+                  className="w-full bg-primary-700 border border-primary-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors"
+                  placeholder="0"
+                />
+              </div>
             </div>
             <div>
-              <label className="form-label">عدد الحمامات *</label>
-              <input
-                type="number"
-                name="bathrooms"
-                value={formData.bathrooms}
+              <label className="block text-gray-300 text-sm mb-2">الوصف</label>
+              <textarea
+                name="description"
+                value={formData.description}
                 onChange={handleChange}
-                className={`form-input ${errors.bathrooms ? 'border-red-500' : ''}`}
-                placeholder="0"
-                min="0"
-              />
-              {errors.bathrooms && <p className="text-red-500 text-sm mt-1">{errors.bathrooms}</p>}
-            </div>
-            <div>
-              <label className="form-label">المساحة (م²) *</label>
-              <input
-                type="number"
-                name="area"
-                value={formData.area}
-                onChange={handleChange}
-                className={`form-input ${errors.area ? 'border-red-500' : ''}`}
-                placeholder="0"
-                min="0"
-              />
-              {errors.area && <p className="text-red-500 text-sm mt-1">{errors.area}</p>}
+                rows="4"
+                className="w-full bg-primary-700 border border-primary-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors resize-none"
+                placeholder="أضف وصفاً تفصيلياً للعقار..."
+              ></textarea>
             </div>
           </div>
 
-          {/* رابط الصورة */}
-          <div className="mb-6">
-            <label className="form-label">رابط صورة العقار (اختياري)</label>
-            <input
-              type="url"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              className="form-input"
-              placeholder="https://example.com/image.jpg"
-              dir="ltr"
-            />
-          </div>
+          {/* زر الإرسال */}
+          <button
+            type="submit"
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-xl transition-colors flex items-center justify-center gap-3 text-lg"
+          >
+            <Send className="w-6 h-6" />
+            إرسال الطلب عبر واتساب
+          </button>
 
-          {/* الوصف */}
-          <div className="mb-8">
-            <label className="form-label">وصف العقار *</label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows="4"
-              className={`form-input resize-none ${errors.description ? 'border-red-500' : ''}`}
-              placeholder="أدخل وصفاً تفصيلياً للعقار..."
-            />
-            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
-          </div>
-
-          {/* الأزرار */}
-          <div className="flex gap-4">
-            <button
-              type="submit"
-              className="flex-1 flex items-center justify-center gap-2 bg-gold-500 hover:bg-gold-600 text-black py-3 px-6 rounded-xl font-bold transition-colors"
-            >
-              <Save className="w-5 h-5" />
-              <span>{editingProperty ? 'حفظ التعديلات' : 'إضافة العقار'}</span>
-            </button>
-            <button
-              type="button"
-              onClick={onCancel}
-              className="flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-500 text-gold-400 py-3 px-6 rounded-xl font-medium transition-colors border border-gold-500/30"
-            >
-              <X className="w-5 h-5" />
-              <span>إلغاء</span>
-            </button>
-          </div>
+          <p className="text-gray-500 text-sm text-center mt-4">
+            سيتم فتح تطبيق واتساب لإرسال بيانات العقار
+          </p>
         </form>
       </div>
     </div>

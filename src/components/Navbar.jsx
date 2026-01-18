@@ -1,4 +1,4 @@
-import { Home, FileText, PlusCircle, Menu, X, Building2, ShieldCheck } from 'lucide-react'
+import { Home, FileText, PlusCircle, Menu, X, Building2 } from 'lucide-react'
 import { useState } from 'react'
 
 function Navbar({ currentPage, onNavigate }) {
@@ -9,7 +9,6 @@ function Navbar({ currentPage, onNavigate }) {
     { id: 'properties', label: 'العقارات', icon: Building2 },
     { id: 'contracts', label: 'العقود', icon: FileText },
     { id: 'addProperty', label: 'إضافة عقار', icon: PlusCircle },
-    { id: 'approvals', label: 'الموافقات', icon: ShieldCheck },
   ]
 
   const handleNavigate = (pageId) => {
