@@ -1,4 +1,4 @@
-import { X, FileCheck, Calendar, Hash, Building2, Briefcase, User } from 'lucide-react'
+import { X, FileCheck, Calendar, Hash, Building2, Briefcase, User, CreditCard, Tag } from 'lucide-react'
 
 // شعار الهيئة العامة للعقار
 const RegaLogo = ({ className }) => (
@@ -53,10 +53,13 @@ function CertificateModal({ type, onClose }) {
       icon: FileCheck,
       color: 'green',
       details: [
-        { label: 'رقم الوثيقة', value: 'FL-2024-987654', icon: Hash },
-        { label: 'تاريخ الإصدار', value: '2024/03/10', icon: Calendar },
-        { label: 'تاريخ الانتهاء', value: '2026/03/10', icon: Calendar },
-        { label: 'النشاط', value: 'خدمات عقارية', icon: Briefcase },
+        { label: 'اسم المستفيد', value: 'ريان ضيف الله محمد الزهراني', icon: User },
+        { label: 'رقم الهوية', value: '1115463349', icon: CreditCard },
+        { label: 'الفئة', value: 'الخدمات العقارية', icon: Tag },
+        { label: 'المهنة', value: 'الوساطة العقارية', icon: Briefcase },
+        { label: 'رمز الوثيقة', value: 'FL-486916566', icon: Hash },
+        { label: 'تاريخ الإصدار', value: '20 يناير 2026', icon: Calendar },
+        { label: 'تاريخ الانتهاء', value: '20 يناير 2027', icon: Calendar },
       ]
     }
   }
@@ -130,11 +133,16 @@ function CertificateModal({ type, onClose }) {
               </>
             ) : (
               <>
-                <div className="w-20 h-20 bg-gold-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Building2 className="w-10 h-10 text-black" />
+                <div className="w-20 h-20 bg-success-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileCheck className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-white">دار الحريري العقارية</h3>
-                <p className="text-gold-400 text-sm font-medium">مرخص ومعتمد</p>
+                <h3 className="text-lg font-bold text-white">وزارة الموارد البشرية</h3>
+                <p className="text-gray-400 text-xs mt-1">والتنمية الاجتماعية</p>
+                <div className="mt-3 flex justify-center">
+                  <span className="inline-block bg-success-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+                    مستقل معتمد
+                  </span>
+                </div>
               </>
             )}
           </div>
@@ -158,19 +166,23 @@ function CertificateModal({ type, onClose }) {
             })}
           </div>
 
-          {/* Electronic Document Note */}
-          {cert.isRega && (
-            <div className="mt-4 bg-primary-700 border border-gold-500/30 rounded-xl p-3 text-center">
-              <p className="text-sm text-gold-400">
-                هذه الوثيقة صادرة من النظام الإلكتروني ولا تحتاج إلى توقيع
-              </p>
-            </div>
-          )}
+          {/* Document Note */}
+          <div className="mt-4 bg-primary-700 border border-gold-500/30 rounded-xl p-3 text-center">
+            <p className="text-sm text-gold-400">
+              {cert.isRega
+                ? 'هذه الوثيقة صادرة من النظام الإلكتروني ولا تحتاج إلى توقيع'
+                : 'هذه الوثيقة تؤكد تسجيل الفرد كمستقل في نظام وزارة الموارد البشرية والتنمية الاجتماعية'
+              }
+            </p>
+          </div>
 
           {/* Verification Note */}
           <div className="mt-4 bg-primary-700 border border-gold-500/30 rounded-xl p-3 text-center">
             <p className="text-sm text-gray-400">
-              يمكن التحقق من صحة هذه الرخصة عبر الموقع الرسمي للهيئة العامة للعقار
+              {cert.isRega
+                ? 'يمكن التحقق من صحة هذه الرخصة عبر الموقع الرسمي للهيئة العامة للعقار'
+                : 'يمكن التحقق من صحة هذه الوثيقة عبر منصة العمل الحر'
+              }
             </p>
           </div>
         </div>
