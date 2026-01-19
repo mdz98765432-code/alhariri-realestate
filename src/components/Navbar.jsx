@@ -25,7 +25,7 @@ function Navbar() {
               <Building2 className="w-6 h-6 text-black" />
             </div>
             <div className="flex flex-col">
-              <span className="text-lg font-bold leading-tight text-gold-400">ALHARIRI</span>
+              <span className="text-lg font-bold leading-tight text-gold-400">DAR ALHARIRI</span>
               <span className="text-xs text-gray-400">REAL ESTATE</span>
             </div>
           </Link>

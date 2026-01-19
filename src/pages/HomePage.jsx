@@ -34,10 +34,10 @@ function HomePage({ properties, onPayment, onCreateContract }) {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-2 text-gold-400">
-              ALHARIRI REAL ESTATE
+              DAR ALHARIRI REAL ESTATE
             </h1>
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">
-              الحريري للعقارات
+              دار الحريري العقارية
             </h2>
             <p className="text-xl text-gray-400 mb-8 leading-relaxed">
               حلول متكاملة للعقارات السكنية والتجارية

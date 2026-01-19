@@ -22,8 +22,8 @@ function Footer({ onShowCertificate }) {
                 <Building2 className="w-6 h-6 text-black" />
               </div>
               <div className="flex flex-col">
-                <span className="text-lg font-bold leading-tight text-gold-400">ALHARIRI REAL ESTATE</span>
-                <span className="text-sm text-gray-400">الحريري للعقارات</span>
+                <span className="text-lg font-bold leading-tight text-gold-400">DAR ALHARIRI REAL ESTATE</span>
+                <span className="text-sm text-gray-400">دار الحريري العقارية</span>
               </div>
             </div>
             <p className="text-gray-400 mb-6 leading-relaxed">
@@ -98,7 +98,7 @@ function Footer({ onShowCertificate }) {
         {/* حقوق النشر */}
         <div className="border-t border-gold-500/20 mt-8 pt-6 text-center">
           <p className="text-gray-500 text-sm">
-            جميع الحقوق محفوظة © {new Date().getFullYear()} <span className="text-gold-400">ALHARIRI REAL ESTATE</span> | الحريري للعقارات
+            جميع الحقوق محفوظة © {new Date().getFullYear()} <span className="text-gold-400">DAR ALHARIRI REAL ESTATE</span> | دار الحريري العقارية
           </p>
         </div>
       </div>

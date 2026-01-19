@@ -1,4 +1,4 @@
-import { X, FileCheck, Calendar, Hash, Building2, Briefcase, Download, User } from 'lucide-react'
+import { X, FileCheck, Calendar, Hash, Building2, Briefcase, User } from 'lucide-react'
 
 // شعار الهيئة العامة للعقار
 const RegaLogo = ({ className }) => (
@@ -81,15 +81,6 @@ function CertificateModal({ type, onClose }) {
 
   const colors = colorClasses[cert.color]
 
-  const handleDownload = () => {
-    const link = document.createElement('a')
-    link.href = cert.pdfUrl
-    link.download = 'رخصة-فال-العقارية.pdf'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
-
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 animate-fadeIn">
       <div className="bg-primary-800 rounded-2xl w-full max-w-md overflow-hidden animate-slideUp max-h-[90vh] overflow-y-auto border border-gold-500/20">
@@ -142,7 +133,7 @@ function CertificateModal({ type, onClose }) {
                 <div className="w-20 h-20 bg-gold-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Building2 className="w-10 h-10 text-black" />
                 </div>
-                <h3 className="text-lg font-bold text-white">مجموعة الحريري للعقارات</h3>
+                <h3 className="text-lg font-bold text-white">دار الحريري العقارية</h3>
                 <p className="text-gold-400 text-sm font-medium">مرخص ومعتمد</p>
               </>
             )}
@@ -166,17 +157,6 @@ function CertificateModal({ type, onClose }) {
               )
             })}
           </div>
-
-          {/* Download Button */}
-          {cert.pdfUrl && (
-            <button
-              onClick={handleDownload}
-              className="mt-6 w-full bg-gold-500 hover:bg-gold-600 text-black py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors"
-            >
-              <Download className="w-5 h-5" />
-              <span>تحميل الرخصة PDF</span>
-            </button>
-          )}
 
           {/* Electronic Document Note */}
           {cert.isRega && (
