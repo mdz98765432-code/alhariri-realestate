@@ -3,44 +3,12 @@ import {
   Mail,
   MapPin,
   FileCheck,
-  CreditCard,
-  Smartphone,
-  Banknote,
+  Award,
   Home,
   Building2,
   PlusCircle
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-
-// شعار الهيئة العامة للعقار
-const RegaLogo = ({ className }) => (
-  <svg viewBox="0 0 40 40" className={className} fill="none">
-    {/* الشكل الهندسي - ماسة */}
-    <path
-      d="M20 2L38 20L20 38L2 20L20 2Z"
-      fill="url(#regaGradient)"
-      stroke="#0d4a6f"
-      strokeWidth="1"
-    />
-    {/* الخطوط الداخلية */}
-    <path
-      d="M20 8L32 20L20 32L8 20L20 8Z"
-      fill="none"
-      stroke="#2dd4bf"
-      strokeWidth="1.5"
-    />
-    <path
-      d="M20 14L26 20L20 26L14 20L20 14Z"
-      fill="#2dd4bf"
-    />
-    <defs>
-      <linearGradient id="regaGradient" x1="2" y1="2" x2="38" y2="38">
-        <stop offset="0%" stopColor="#0d4a6f" />
-        <stop offset="100%" stopColor="#1e6a8a" />
-      </linearGradient>
-    </defs>
-  </svg>
-)
 
 function Footer({ onShowCertificate }) {
   return (
@@ -69,8 +37,8 @@ function Footer({ onShowCertificate }) {
                 onClick={() => onShowCertificate('marketing')}
                 className="flex items-center gap-2 bg-primary-800 hover:bg-primary-700 px-4 py-2 rounded-lg transition-colors border border-gold-500/20"
               >
-                <RegaLogo className="w-6 h-6" />
-                <span className="text-sm text-gold-400">الهيئة العامة للعقار</span>
+                <Award className="w-5 h-5 text-gold-400" />
+                <span className="text-sm text-gold-400">رخصة فال</span>
               </button>
               <button
                 onClick={() => onShowCertificate('freelance')}
@@ -110,7 +78,7 @@ function Footer({ onShowCertificate }) {
           {/* معلومات التواصل */}
           <div>
             <h3 className="text-lg font-bold mb-4 text-gold-400">تواصل معنا</h3>
-            <ul className="space-y-3 mb-6">
+            <ul className="space-y-3">
               <li className="flex items-center gap-3 text-gray-400">
                 <Phone className="w-5 h-5 text-gold-500" />
                 <span dir="ltr">+966 55 055 2045</span>
@@ -124,35 +92,6 @@ function Footer({ onShowCertificate }) {
                 <span>جدة، المملكة العربية السعودية</span>
               </li>
             </ul>
-
-            {/* وسائل الدفع */}
-            <h4 className="text-sm font-medium mb-3 text-gold-400">وسائل الدفع المعتمدة</h4>
-            <div className="flex flex-wrap gap-2">
-              <div className="bg-primary-800 border border-gold-500/20 px-3 py-2 rounded-lg flex items-center gap-2">
-                <CreditCard className="w-4 h-4 text-gold-400" />
-                <span className="text-xs text-gray-300">مدى</span>
-              </div>
-              <div className="bg-primary-800 border border-gold-500/20 px-3 py-2 rounded-lg flex items-center gap-2">
-                <CreditCard className="w-4 h-4 text-gold-400" />
-                <span className="text-xs text-gray-300">فيزا</span>
-              </div>
-              <div className="bg-primary-800 border border-gold-500/20 px-3 py-2 rounded-lg flex items-center gap-2">
-                <CreditCard className="w-4 h-4 text-gold-400" />
-                <span className="text-xs text-gray-300">ماستركارد</span>
-              </div>
-              <div className="bg-primary-800 border border-gold-500/20 px-3 py-2 rounded-lg flex items-center gap-2">
-                <Smartphone className="w-4 h-4 text-gold-400" />
-                <span className="text-xs text-gray-300">Apple Pay</span>
-              </div>
-              <div className="bg-primary-800 border border-gold-500/20 px-3 py-2 rounded-lg flex items-center gap-2">
-                <Smartphone className="w-4 h-4 text-gold-400" />
-                <span className="text-xs text-gray-300">STC Pay</span>
-              </div>
-              <div className="bg-primary-800 border border-gold-500/20 px-3 py-2 rounded-lg flex items-center gap-2">
-                <Banknote className="w-4 h-4 text-gold-400" />
-                <span className="text-xs text-gray-300">تحويل</span>
-              </div>
-            </div>
           </div>
         </div>
 
