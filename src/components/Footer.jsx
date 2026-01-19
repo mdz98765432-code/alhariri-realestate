@@ -8,9 +8,7 @@ import {
   Banknote,
   Home,
   Building2,
-  FileText,
-  PlusCircle,
-  ShieldCheck
+  PlusCircle
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -101,24 +99,9 @@ function Footer({ onShowCertificate }) {
                 </Link>
               </li>
               <li>
-                <Link to="/contracts" className="flex items-center gap-2 text-gray-400 hover:text-gold-400 transition-colors">
-                  <FileText className="w-4 h-4" />
-                  <span>العقود</span>
-                </Link>
-              </li>
-              <li>
                 <Link to="/add" className="flex items-center gap-2 text-gray-400 hover:text-gold-400 transition-colors">
                   <PlusCircle className="w-4 h-4" />
                   <span>إضافة عقار</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/admin"
-                  className="flex items-center gap-2 text-gray-500 hover:text-gold-400 transition-colors text-sm"
-                >
-                  <ShieldCheck className="w-4 h-4" />
-                  <span>دخول المدير</span>
                 </Link>
               </li>
             </ul>
