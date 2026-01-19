@@ -1,10 +1,14 @@
-import { Building2, FileText, Megaphone, ArrowLeft, Shield, Award, CheckCircle, Calendar, Hash, User, Briefcase, FileCheck, CreditCard, Tag } from 'lucide-react'
+import { Building2, FileText, Megaphone, ArrowLeft, Shield, CheckCircle, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import PropertyCard from '../components/PropertyCard'
 
 function HomePage({ properties, onPayment, onCreateContract }) {
   // عرض أحدث 4 عقارات
   const latestProperties = properties.slice(0, 4)
+
+  // حالة عرض الصورة المكبرة
+  const [selectedImage, setSelectedImage] = useState(null)
 
   const features = [
     {
@@ -105,159 +109,61 @@ function HomePage({ properties, onPayment, onCreateContract }) {
             </p>
           </div>
 
-          {/* License Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {/* License Images */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
 
-            {/* Card 1 - FAL License */}
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0d4a6f] via-[#1a5a7a] to-[#2dd4bf]/30 p-1 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#2dd4bf]/20 transition-all duration-300">
-              <div className="absolute top-4 left-4 z-10">
-                <span className="bg-gold-500 text-black text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-                  <CheckCircle className="w-3 h-3" />
-                  مرخص
-                </span>
+            {/* Image 1 - FAL License */}
+            <div className="group">
+              <div
+                onClick={() => setSelectedImage({ src: '/fal-license.png', title: 'رخصة فال العقارية' })}
+                className="cursor-pointer relative overflow-hidden rounded-2xl border-2 border-gold-500/30 hover:border-gold-500 transition-all duration-300 hover:shadow-2xl hover:shadow-gold-500/20 hover:scale-[1.02]"
+              >
+                <img
+                  src="/fal-license.png"
+                  alt="رخصة فال العقارية - الهيئة العامة للعقار"
+                  className="w-full h-auto object-contain bg-white"
+                />
+                <div className="absolute top-3 right-3">
+                  <span className="bg-gold-500 text-black text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
+                    <CheckCircle className="w-3 h-3" />
+                    مرخص
+                  </span>
+                </div>
               </div>
-              <div className="bg-primary-900/95 backdrop-blur rounded-xl p-6">
-                {/* Header */}
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#0d4a6f] to-[#2dd4bf] rounded-xl flex items-center justify-center">
-                    <Award className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white">رخصة فال العقارية</h3>
-                    <p className="text-[#2dd4bf] text-sm">الهيئة العامة للعقار</p>
-                  </div>
-                </div>
-
-                {/* Details */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between bg-primary-800/50 rounded-lg p-3">
-                    <div className="flex items-center gap-2">
-                      <Hash className="w-4 h-4 text-[#2dd4bf]" />
-                      <span className="text-gray-400 text-sm">رقم الرخصة</span>
-                    </div>
-                    <span className="text-white font-bold" dir="ltr">1100278011</span>
-                  </div>
-                  <div className="flex items-center justify-between bg-primary-800/50 rounded-lg p-3">
-                    <div className="flex items-center gap-2">
-                      <User className="w-4 h-4 text-[#2dd4bf]" />
-                      <span className="text-gray-400 text-sm">اسم المرخص</span>
-                    </div>
-                    <span className="text-white font-bold text-sm">ريان ضيف الله محمد الزهراني</span>
-                  </div>
-                  <div className="flex items-center justify-between bg-primary-800/50 rounded-lg p-3">
-                    <div className="flex items-center gap-2">
-                      <Briefcase className="w-4 h-4 text-[#2dd4bf]" />
-                      <span className="text-gray-400 text-sm">النشاط</span>
-                    </div>
-                    <span className="text-white font-bold text-sm">فال للوساطة والتسويق</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-primary-800/50 rounded-lg p-3">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Calendar className="w-4 h-4 text-[#2dd4bf]" />
-                        <span className="text-gray-400 text-xs">تاريخ الإصدار</span>
-                      </div>
-                      <span className="text-white font-bold text-sm" dir="ltr">22/01/2025</span>
-                    </div>
-                    <div className="bg-primary-800/50 rounded-lg p-3">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Calendar className="w-4 h-4 text-[#2dd4bf]" />
-                        <span className="text-gray-400 text-xs">تاريخ الانتهاء</span>
-                      </div>
-                      <span className="text-white font-bold text-sm" dir="ltr">22/01/2027</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Status */}
-                <div className="mt-4 flex items-center justify-center gap-2 bg-success-500/20 text-success-400 py-2 rounded-lg">
-                  <CheckCircle className="w-5 h-5" />
-                  <span className="font-bold">حالة الرخصة: سارية</span>
+              <div className="mt-4 text-center">
+                <h3 className="text-lg font-bold text-white mb-1">رخصة فال العقارية</h3>
+                <p className="text-gray-400 text-sm mb-2">الهيئة العامة للعقار</p>
+                <div className="inline-flex items-center gap-2 bg-success-500/20 text-success-400 px-4 py-1.5 rounded-full text-sm font-medium">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>سارية</span>
                 </div>
               </div>
             </div>
 
-            {/* Card 2 - Freelance Document */}
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-success-600 via-success-500 to-emerald-400/30 p-1 hover:-translate-y-2 hover:shadow-2xl hover:shadow-success-500/20 transition-all duration-300">
-              <div className="absolute top-4 left-4 z-10">
-                <span className="bg-white text-success-600 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-                  <CheckCircle className="w-3 h-3" />
-                  معتمد
-                </span>
+            {/* Image 2 - Freelance Certificate */}
+            <div className="group">
+              <div
+                onClick={() => setSelectedImage({ src: '/freelance-certificate.png', title: 'وثيقة العمل الحر' })}
+                className="cursor-pointer relative overflow-hidden rounded-2xl border-2 border-success-500/30 hover:border-success-500 transition-all duration-300 hover:shadow-2xl hover:shadow-success-500/20 hover:scale-[1.02]"
+              >
+                <img
+                  src="/freelance-certificate.png"
+                  alt="وثيقة العمل الحر - وزارة الموارد البشرية"
+                  className="w-full h-auto object-contain bg-white"
+                />
+                <div className="absolute top-3 right-3">
+                  <span className="bg-success-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
+                    <CheckCircle className="w-3 h-3" />
+                    معتمد
+                  </span>
+                </div>
               </div>
-              <div className="bg-primary-900/95 backdrop-blur rounded-xl p-6">
-                {/* Header */}
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-success-600 to-emerald-400 rounded-xl flex items-center justify-center">
-                    <FileCheck className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white">وثيقة العمل الحر</h3>
-                    <p className="text-success-400 text-sm">وزارة الموارد البشرية والتنمية الاجتماعية</p>
-                  </div>
-                </div>
-
-                {/* Details */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between bg-primary-800/50 rounded-lg p-2.5">
-                    <div className="flex items-center gap-2">
-                      <User className="w-4 h-4 text-success-400" />
-                      <span className="text-gray-400 text-sm">الاسم</span>
-                    </div>
-                    <span className="text-white font-bold text-sm">ريان ضيف الله محمد الزهراني</span>
-                  </div>
-                  <div className="flex items-center justify-between bg-primary-800/50 rounded-lg p-2.5">
-                    <div className="flex items-center gap-2">
-                      <CreditCard className="w-4 h-4 text-success-400" />
-                      <span className="text-gray-400 text-sm">رقم الهوية</span>
-                    </div>
-                    <span className="text-white font-bold" dir="ltr">1115463349</span>
-                  </div>
-                  <div className="flex items-center justify-between bg-primary-800/50 rounded-lg p-2.5">
-                    <div className="flex items-center gap-2">
-                      <Hash className="w-4 h-4 text-success-400" />
-                      <span className="text-gray-400 text-sm">رمز الوثيقة</span>
-                    </div>
-                    <span className="text-white font-bold" dir="ltr">FL-486916566</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="flex items-center justify-between bg-primary-800/50 rounded-lg p-2.5">
-                      <div className="flex items-center gap-2">
-                        <Tag className="w-4 h-4 text-success-400" />
-                        <span className="text-gray-400 text-sm">الفئة</span>
-                      </div>
-                      <span className="text-white font-bold text-xs">الخدمات العقارية</span>
-                    </div>
-                    <div className="flex items-center justify-between bg-primary-800/50 rounded-lg p-2.5">
-                      <div className="flex items-center gap-2">
-                        <Briefcase className="w-4 h-4 text-success-400" />
-                        <span className="text-gray-400 text-sm">المهنة</span>
-                      </div>
-                      <span className="text-white font-bold text-xs">الوساطة العقارية</span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="bg-primary-800/50 rounded-lg p-2.5">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Calendar className="w-4 h-4 text-success-400" />
-                        <span className="text-gray-400 text-xs">تاريخ الإصدار</span>
-                      </div>
-                      <span className="text-white font-bold text-sm" dir="ltr">20/01/2026</span>
-                    </div>
-                    <div className="bg-primary-800/50 rounded-lg p-2.5">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Calendar className="w-4 h-4 text-success-400" />
-                        <span className="text-gray-400 text-xs">تاريخ الانتهاء</span>
-                      </div>
-                      <span className="text-white font-bold text-sm" dir="ltr">20/01/2027</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Status */}
-                <div className="mt-3 flex items-center justify-center gap-2 bg-success-500/20 text-success-400 py-2 rounded-lg">
-                  <CheckCircle className="w-5 h-5" />
-                  <span className="font-bold">الحالة: سارية</span>
+              <div className="mt-4 text-center">
+                <h3 className="text-lg font-bold text-white mb-1">وثيقة العمل الحر</h3>
+                <p className="text-gray-400 text-sm mb-2">وزارة الموارد البشرية والتنمية الاجتماعية</p>
+                <div className="inline-flex items-center gap-2 bg-success-500/20 text-success-400 px-4 py-1.5 rounded-full text-sm font-medium">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>سارية</span>
                 </div>
               </div>
             </div>
@@ -267,11 +173,34 @@ function HomePage({ properties, onPayment, onCreateContract }) {
           {/* Trust Badge */}
           <div className="mt-10 text-center">
             <p className="text-gray-500 text-sm">
-              يمكن التحقق من صحة الرخص والوثائق عبر المواقع الرسمية للجهات المختصة
+              اضغط على الصورة لعرضها بحجم أكبر • يمكن التحقق من صحة الرخص عبر المواقع الرسمية للجهات المختصة
             </p>
           </div>
         </div>
       </section>
+
+      {/* Image Lightbox Modal */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fadeIn"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            onClick={() => setSelectedImage(null)}
+            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+          >
+            <X className="w-6 h-6 text-white" />
+          </button>
+          <div className="max-w-4xl max-h-[90vh] animate-slideUp" onClick={e => e.stopPropagation()}>
+            <img
+              src={selectedImage.src}
+              alt={selectedImage.title}
+              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+            />
+            <p className="text-center text-white mt-4 text-lg font-medium">{selectedImage.title}</p>
+          </div>
+        </div>
+      )}
 
       {/* Latest Properties Section */}
       <section className="py-16 bg-primary-900">
