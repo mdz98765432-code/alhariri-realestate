@@ -2,15 +2,13 @@ import {
   Phone,
   Mail,
   MapPin,
-  FileCheck,
-  Award,
   Home,
   Building2,
   PlusCircle
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-function Footer({ onShowCertificate }) {
+function Footer() {
   return (
     <footer className="bg-primary-950 text-white mt-auto border-t border-gold-500/20">
       <div className="container mx-auto px-4 py-12">
@@ -26,28 +24,10 @@ function Footer({ onShowCertificate }) {
                 <span className="text-sm text-gray-400">دار الحريري العقارية</span>
               </div>
             </div>
-            <p className="text-gray-400 mb-6 leading-relaxed">
+            <p className="text-gray-400 leading-relaxed">
               منصة متكاملة للوساطة العقارية تقدم خدمات احترافية في مجال العقارات
-              السكنية والتجارية، مع عقود إلكترونية موثقة ووسائل دفع متعددة.
+              السكنية والتجارية، مع عقود إلكترونية موثقة وتسويق عقاري احترافي.
             </p>
-
-            {/* أزرار الشهادات */}
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={() => onShowCertificate('marketing')}
-                className="flex items-center gap-2 bg-primary-800 hover:bg-primary-700 px-4 py-2 rounded-lg transition-colors border border-gold-500/20"
-              >
-                <Award className="w-5 h-5 text-gold-400" />
-                <span className="text-sm text-gold-400">رخصة فال</span>
-              </button>
-              <button
-                onClick={() => onShowCertificate('freelance')}
-                className="flex items-center gap-2 bg-primary-800 hover:bg-primary-700 px-4 py-2 rounded-lg transition-colors border border-gold-500/20"
-              >
-                <FileCheck className="w-5 h-5 text-success-500" />
-                <span className="text-sm text-gold-400">وثيقة العمل الحر</span>
-              </button>
-            </div>
           </div>
 
           {/* روابط سريعة */}
