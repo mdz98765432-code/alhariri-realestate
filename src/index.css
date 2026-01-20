@@ -144,3 +144,34 @@ body {
     box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
   }
 }
+
+/* PDF Viewer Styles */
+.react-pdf__Page {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.react-pdf__Page__canvas {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain;
+}
+
+/* License Card Styles */
+.license-card {
+  transition: all 0.3s ease;
+}
+
+.license-card:hover {
+  transform: scale(1.02);
+}
+
+/* Golden Border Animation */
+@keyframes goldenGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 3px #D4AF37, 0 0 20px rgba(212, 175, 55, 0.3), 0 10px 40px rgba(0,0,0,0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 3px #D4AF37, 0 0 30px rgba(212, 175, 55, 0.5), 0 10px 40px rgba(0,0,0,0.3);
+  }
+}

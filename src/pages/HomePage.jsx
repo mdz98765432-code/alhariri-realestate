@@ -1,7 +1,11 @@
 import { Building2, FileText, Megaphone, ArrowLeft, Shield, CheckCircle, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import { Document, Page, pdfjs } from 'react-pdf'
 import PropertyCard from '../components/PropertyCard'
+
+// تكوين pdf.js worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
 
 function HomePage({ properties, onPayment, onCreateContract }) {
   // عرض أحدث 4 عقارات
@@ -109,30 +113,50 @@ function HomePage({ properties, onPayment, onCreateContract }) {
             </p>
           </div>
 
-          {/* License Images */}
+          {/* License Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
 
-            {/* Image 1 - FAL License */}
+            {/* Card 1 - FAL License */}
             <div className="group">
               <div
-                onClick={() => setSelectedImage({ src: '/fal-license.png', title: 'رخصة فال العقارية' })}
-                className="cursor-pointer relative overflow-hidden rounded-2xl border-2 border-gold-500/30 hover:border-gold-500 transition-all duration-300 hover:shadow-2xl hover:shadow-gold-500/20 hover:scale-[1.02]"
+                onClick={() => setSelectedImage({ src: '/fal-license.pdf', title: 'رخصة فال العقارية', isPdf: true })}
+                className="cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-primary-700 to-primary-800 p-3"
+                style={{
+                  boxShadow: '0 0 0 3px #D4AF37, 0 0 20px rgba(212, 175, 55, 0.3), 0 10px 40px rgba(0,0,0,0.3)'
+                }}
               >
-                <img
-                  src="/fal-license.png"
-                  alt="رخصة فال العقارية - الهيئة العامة للعقار"
-                  className="w-full h-auto object-contain bg-white"
-                />
-                <div className="absolute top-3 right-3">
-                  <span className="bg-gold-500 text-black text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
-                    <CheckCircle className="w-3 h-3" />
+                {/* PDF Preview Image */}
+                <div className="aspect-[3/4] bg-white rounded-xl overflow-hidden relative">
+                  <Document file="/fal-license.pdf" loading={
+                    <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                      <div className="animate-pulse text-gray-400">جاري التحميل...</div>
+                    </div>
+                  }>
+                    <Page
+                      pageNumber={1}
+                      width={350}
+                      renderTextLayer={false}
+                      renderAnnotationLayer={false}
+                    />
+                  </Document>
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-gold-500 text-black px-4 py-2 rounded-full font-bold text-sm">
+                      اضغط للعرض
+                    </span>
+                  </div>
+                </div>
+                {/* Badge */}
+                <div className="absolute top-5 right-5">
+                  <span className="bg-gold-500 text-black text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shadow-lg">
+                    <CheckCircle className="w-3.5 h-3.5" />
                     مرخص
                   </span>
                 </div>
               </div>
-              <div className="mt-4 text-center">
-                <h3 className="text-lg font-bold text-white mb-1">رخصة فال العقارية</h3>
-                <p className="text-gray-400 text-sm mb-2">الهيئة العامة للعقار</p>
+              {/* License Name & Status */}
+              <div className="mt-5 text-center">
+                <h4 className="text-lg font-bold text-white mb-2">رخصة فال العقارية</h4>
                 <div className="inline-flex items-center gap-2 bg-success-500/20 text-success-400 px-4 py-1.5 rounded-full text-sm font-medium">
                   <CheckCircle className="w-4 h-4" />
                   <span>سارية</span>
@@ -140,27 +164,47 @@ function HomePage({ properties, onPayment, onCreateContract }) {
               </div>
             </div>
 
-            {/* Image 2 - Freelance Certificate */}
+            {/* Card 2 - Freelance Certificate */}
             <div className="group">
               <div
-                onClick={() => setSelectedImage({ src: '/freelance-certificate.png', title: 'وثيقة العمل الحر' })}
-                className="cursor-pointer relative overflow-hidden rounded-2xl border-2 border-success-500/30 hover:border-success-500 transition-all duration-300 hover:shadow-2xl hover:shadow-success-500/20 hover:scale-[1.02]"
+                onClick={() => setSelectedImage({ src: '/freelance-certificate.pdf', title: 'وثيقة العمل الحر', isPdf: true })}
+                className="cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-primary-700 to-primary-800 p-3"
+                style={{
+                  boxShadow: '0 0 0 3px #D4AF37, 0 0 20px rgba(212, 175, 55, 0.3), 0 10px 40px rgba(0,0,0,0.3)'
+                }}
               >
-                <img
-                  src="/freelance-certificate.png"
-                  alt="وثيقة العمل الحر - وزارة الموارد البشرية"
-                  className="w-full h-auto object-contain bg-white"
-                />
-                <div className="absolute top-3 right-3">
-                  <span className="bg-success-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
-                    <CheckCircle className="w-3 h-3" />
+                {/* PDF Preview Image */}
+                <div className="aspect-[3/4] bg-white rounded-xl overflow-hidden relative">
+                  <Document file="/freelance-certificate.pdf" loading={
+                    <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                      <div className="animate-pulse text-gray-400">جاري التحميل...</div>
+                    </div>
+                  }>
+                    <Page
+                      pageNumber={1}
+                      width={350}
+                      renderTextLayer={false}
+                      renderAnnotationLayer={false}
+                    />
+                  </Document>
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-gold-500 text-black px-4 py-2 rounded-full font-bold text-sm">
+                      اضغط للعرض
+                    </span>
+                  </div>
+                </div>
+                {/* Badge */}
+                <div className="absolute top-5 right-5">
+                  <span className="bg-success-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shadow-lg">
+                    <CheckCircle className="w-3.5 h-3.5" />
                     معتمد
                   </span>
                 </div>
               </div>
-              <div className="mt-4 text-center">
-                <h3 className="text-lg font-bold text-white mb-1">وثيقة العمل الحر</h3>
-                <p className="text-gray-400 text-sm mb-2">وزارة الموارد البشرية والتنمية الاجتماعية</p>
+              {/* License Name & Status */}
+              <div className="mt-5 text-center">
+                <h4 className="text-lg font-bold text-white mb-2">وثيقة العمل الحر</h4>
                 <div className="inline-flex items-center gap-2 bg-success-500/20 text-success-400 px-4 py-1.5 rounded-full text-sm font-medium">
                   <CheckCircle className="w-4 h-4" />
                   <span>سارية</span>
@@ -173,31 +217,39 @@ function HomePage({ properties, onPayment, onCreateContract }) {
           {/* Trust Badge */}
           <div className="mt-10 text-center">
             <p className="text-gray-500 text-sm">
-              اضغط على الصورة لعرضها بحجم أكبر • يمكن التحقق من صحة الرخص عبر المواقع الرسمية للجهات المختصة
+              اضغط على البطاقة لعرض الرخصة كاملة • يمكن التحقق من صحة الرخص عبر المواقع الرسمية للجهات المختصة
             </p>
           </div>
         </div>
       </section>
 
-      {/* Image Lightbox Modal */}
+      {/* PDF/Image Lightbox Modal */}
       {selectedImage && (
         <div
-          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fadeIn"
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 animate-fadeIn"
           onClick={() => setSelectedImage(null)}
         >
           <button
             onClick={() => setSelectedImage(null)}
-            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            className="absolute top-4 right-4 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
           >
             <X className="w-6 h-6 text-white" />
           </button>
-          <div className="max-w-4xl max-h-[90vh] animate-slideUp" onClick={e => e.stopPropagation()}>
-            <img
-              src={selectedImage.src}
-              alt={selectedImage.title}
-              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
-            />
-            <p className="text-center text-white mt-4 text-lg font-medium">{selectedImage.title}</p>
+          <div className="w-full max-w-5xl h-[90vh] animate-slideUp" onClick={e => e.stopPropagation()}>
+            <p className="text-center text-white mb-4 text-xl font-bold">{selectedImage.title}</p>
+            {selectedImage.isPdf ? (
+              <iframe
+                src={selectedImage.src}
+                title={selectedImage.title}
+                className="w-full h-[calc(100%-3rem)] rounded-lg bg-white"
+              />
+            ) : (
+              <img
+                src={selectedImage.src}
+                alt={selectedImage.title}
+                className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl mx-auto"
+              />
+            )}
           </div>
         </div>
       )}
