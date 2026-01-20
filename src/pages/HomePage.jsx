@@ -173,9 +173,12 @@ function HomePage({ properties, onPayment, onCreateContract }) {
                   boxShadow: '0 0 0 3px #D4AF37, 0 0 20px rgba(212, 175, 55, 0.3), 0 10px 40px rgba(0,0,0,0.3)'
                 }}
               >
-                {/* PDF Preview Image - Rotated 90deg */}
+                {/* PDF Preview Image - Rotated 90deg and scaled to fill */}
                 <div className="aspect-[3/4] bg-white rounded-xl overflow-hidden relative flex items-center justify-center">
-                  <div style={{ transform: 'rotate(-90deg)', transformOrigin: 'center center' }}>
+                  <div style={{
+                    transform: 'rotate(-90deg) scale(1.4)',
+                    transformOrigin: 'center center',
+                  }}>
                     <Document file="/freelance-certificate.pdf" loading={
                       <div className="w-full h-full flex items-center justify-center bg-gray-100">
                         <div className="animate-pulse text-gray-400">جاري التحميل...</div>
@@ -183,7 +186,7 @@ function HomePage({ properties, onPayment, onCreateContract }) {
                     }>
                       <Page
                         pageNumber={1}
-                        height={350}
+                        height={400}
                         renderTextLayer={false}
                         renderAnnotationLayer={false}
                       />
