@@ -173,20 +173,22 @@ function HomePage({ properties, onPayment, onCreateContract }) {
                   boxShadow: '0 0 0 3px #D4AF37, 0 0 20px rgba(212, 175, 55, 0.3), 0 10px 40px rgba(0,0,0,0.3)'
                 }}
               >
-                {/* PDF Preview Image */}
-                <div className="aspect-[3/4] bg-white rounded-xl overflow-hidden relative">
-                  <Document file="/freelance-certificate.pdf" loading={
-                    <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                      <div className="animate-pulse text-gray-400">جاري التحميل...</div>
-                    </div>
-                  }>
-                    <Page
-                      pageNumber={1}
-                      width={350}
-                      renderTextLayer={false}
-                      renderAnnotationLayer={false}
-                    />
-                  </Document>
+                {/* PDF Preview Image - Rotated 90deg */}
+                <div className="aspect-[3/4] bg-white rounded-xl overflow-hidden relative flex items-center justify-center">
+                  <div style={{ transform: 'rotate(-90deg)', transformOrigin: 'center center' }}>
+                    <Document file="/freelance-certificate.pdf" loading={
+                      <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                        <div className="animate-pulse text-gray-400">جاري التحميل...</div>
+                      </div>
+                    }>
+                      <Page
+                        pageNumber={1}
+                        height={350}
+                        renderTextLayer={false}
+                        renderAnnotationLayer={false}
+                      />
+                    </Document>
+                  </div>
                   {/* Hover Overlay */}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-gold-500 text-black px-4 py-2 rounded-full font-bold text-sm">
