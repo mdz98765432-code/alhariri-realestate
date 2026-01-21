@@ -45,7 +45,7 @@ function PropertyCard({ property }) {
       <div className="relative h-48 overflow-hidden">
         <img
           src={property.image}
-          alt={property.title}
+          alt={`${property.title} - ${property.type === 'rent' ? 'للإيجار' : 'للبيع'} في ${property.location} - دار الحريري العقارية`}
           className="w-full h-full object-cover"
         />
         {/* شارات */}
