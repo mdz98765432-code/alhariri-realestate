@@ -291,7 +291,7 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
   }
 
   // إضافة عقار جديد
-  const handleAddProperty = (e) => {
+  const handleAddProperty = async (e) => {
     e.preventDefault()
 
     if (!formData.title || !formData.city || !formData.price) {
@@ -300,7 +300,6 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
     }
 
     const newProperty = {
-      id: Date.now(),
       ...formData,
       price: parseFloat(formData.price) || 0,
       bedrooms: parseInt(formData.bedrooms) || 0,
@@ -308,14 +307,17 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
       area: parseFloat(formData.area) || 0,
       location: `${formData.neighborhood}، ${formData.city}`,
       type: formData.purpose,
-      image: formData.image || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop',
-      createdAt: new Date().toISOString()
+      image: formData.image || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop'
     }
 
-    onAdd(newProperty)
-    resetForm()
-    setSuccessMessage('تم إضافة العقار بنجاح')
-    setTimeout(() => setSuccessMessage(''), 3000)
+    try {
+      await onAdd(newProperty)
+      resetForm()
+      setSuccessMessage('تم إضافة العقار بنجاح')
+      setTimeout(() => setSuccessMessage(''), 3000)
+    } catch {
+      alert('حدث خطأ أثناء الإضافة، يرجى المحاولة مجدداً')
+    }
   }
 
   // فتح نموذج التعديل
@@ -340,7 +342,7 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
   }
 
   // حفظ التعديلات
-  const handleSaveEdit = (e) => {
+  const handleSaveEdit = async (e) => {
     e.preventDefault()
 
     if (!formData.title || !formData.city || !formData.price) {
@@ -359,18 +361,26 @@ function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
       type: formData.purpose
     }
 
-    onUpdate(updatedProperty)
-    resetForm()
-    setSuccessMessage('تم تحديث العقار بنجاح')
-    setTimeout(() => setSuccessMessage(''), 3000)
+    try {
+      await onUpdate(updatedProperty)
+      resetForm()
+      setSuccessMessage('تم تحديث العقار بنجاح')
+      setTimeout(() => setSuccessMessage(''), 3000)
+    } catch {
+      alert('حدث خطأ أثناء التحديث، يرجى المحاولة مجدداً')
+    }
   }
 
   // حذف عقار
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm('هل أنت متأكد من حذف هذا العقار؟')) {
-      onDelete(id)
-      setSuccessMessage('تم حذف العقار بنجاح')
-      setTimeout(() => setSuccessMessage(''), 3000)
+      try {
+        await onDelete(id)
+        setSuccessMessage('تم حذف العقار بنجاح')
+        setTimeout(() => setSuccessMessage(''), 3000)
+      } catch {
+        alert('حدث خطأ أثناء الحذف، يرجى المحاولة مجدداً')
+      }
     }
   }
 

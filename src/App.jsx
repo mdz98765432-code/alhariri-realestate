@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import { MessageCircle } from 'lucide-react'
+import {
+  collection,
+  onSnapshot,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  query,
+  orderBy
+} from 'firebase/firestore'
+import { db } from './firebase'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
@@ -31,41 +42,10 @@ const WhatsAppFloatingButton = () => {
   )
 }
 
-// معرّفات العقارات الافتراضية القديمة لحذفها
-const OLD_DEFAULT_IDS = [1, 2]
-
-// دالة لتحميل العقارات من localStorage
-const loadProperties = () => {
-  try {
-    const saved = localStorage.getItem('properties')
-    if (saved) {
-      const parsed = JSON.parse(saved)
-      // حذف العقارات الافتراضية القديمة إن وُجدت
-      const cleaned = parsed.filter(p => !OLD_DEFAULT_IDS.includes(p.id))
-      if (cleaned.length !== parsed.length) {
-        localStorage.setItem('properties', JSON.stringify(cleaned))
-      }
-      return cleaned
-    }
-  } catch (error) {
-    console.error('Error loading properties:', error)
-  }
-  localStorage.setItem('properties', JSON.stringify([]))
-  return []
-}
-
-// دالة لحفظ العقارات في localStorage
-const saveProperties = (properties) => {
-  try {
-    localStorage.setItem('properties', JSON.stringify(properties))
-  } catch (error) {
-    console.error('Error saving properties:', error)
-  }
-}
-
 function App() {
   const navigate = useNavigate()
-  const [properties, setProperties] = useState(loadProperties)
+  const [properties, setProperties] = useState([])
+  const [loading, setLoading] = useState(true)
   const [contracts, setContracts] = useState([])
   const [selectedProperty, setSelectedProperty] = useState(null)
 
@@ -74,39 +54,56 @@ function App() {
   const [showCertificateModal, setShowCertificateModal] = useState(false)
   const [certificateType, setCertificateType] = useState(null)
 
-  // حفظ العقارات عند تغييرها
+  // الاستماع لتغييرات Firestore في الوقت الفعلي
   useEffect(() => {
-    saveProperties(properties)
-  }, [properties])
-
-  // مزامنة العقارات مع تبويبات أخرى (اختياري)
-  useEffect(() => {
-    const handleStorageChange = (e) => {
-      if (e.key === 'properties' && e.newValue) {
-        try {
-          setProperties(JSON.parse(e.newValue))
-        } catch (err) {
-          console.error('Error parsing properties:', err)
-        }
-      }
-    }
-    window.addEventListener('storage', handleStorageChange)
-    return () => window.removeEventListener('storage', handleStorageChange)
+    const q = query(collection(db, 'properties'), orderBy('createdAt', 'desc'))
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const props = snapshot.docs.map(docSnap => ({
+        id: docSnap.id,
+        ...docSnap.data()
+      }))
+      setProperties(props)
+      setLoading(false)
+    }, (error) => {
+      console.error('Firestore error:', error)
+      setLoading(false)
+    })
+    return () => unsubscribe()
   }, [])
 
-  // دوال إدارة العقارات — تُمرَّر لـ AdminPage مباشرة
-  const addProperty = (newProperty) => {
-    setProperties(prev => [...prev, newProperty])
+  // إضافة عقار جديد إلى Firestore
+  const addProperty = async (newProperty) => {
+    try {
+      const { id, ...data } = newProperty
+      await addDoc(collection(db, 'properties'), {
+        ...data,
+        createdAt: new Date().toISOString()
+      })
+    } catch (error) {
+      console.error('Error adding property:', error)
+      throw error
+    }
   }
 
-  const updateProperty = (updatedProperty) => {
-    setProperties(prev => prev.map(p =>
-      p.id === updatedProperty.id ? updatedProperty : p
-    ))
+  // تحديث عقار في Firestore
+  const updateProperty = async (updatedProperty) => {
+    try {
+      const { id, ...data } = updatedProperty
+      await updateDoc(doc(db, 'properties', id), data)
+    } catch (error) {
+      console.error('Error updating property:', error)
+      throw error
+    }
   }
 
-  const deleteProperty = (id) => {
-    setProperties(prev => prev.filter(p => p.id !== id))
+  // حذف عقار من Firestore
+  const deleteProperty = async (id) => {
+    try {
+      await deleteDoc(doc(db, 'properties', id))
+    } catch (error) {
+      console.error('Error deleting property:', error)
+      throw error
+    }
   }
 
   // دوال إدارة العقود
@@ -131,10 +128,21 @@ function App() {
     setShowCertificateModal(true)
   }
 
-  // التنقل مع اختيار عقار للعقد
   const navigateToContract = (property) => {
     setSelectedProperty(property)
     navigate('/create-contract')
+  }
+
+  // شاشة التحميل
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-primary-900">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-gold-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gold-400 text-lg font-medium">جاري التحميل...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -179,10 +187,8 @@ function App() {
 
       <Footer onShowCertificate={openCertificateModal} />
 
-      {/* زر الواتساب العائم */}
       <WhatsAppFloatingButton />
 
-      {/* نافذة الدفع */}
       {showPaymentModal && (
         <PaymentModal
           property={selectedProperty}
@@ -190,7 +196,6 @@ function App() {
         />
       )}
 
-      {/* نافذة الشهادات */}
       {showCertificateModal && (
         <CertificateModal
           type={certificateType}
