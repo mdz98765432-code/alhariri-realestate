@@ -20,6 +20,7 @@ import AddPropertyPage from './pages/AddPropertyPage'
 import CreateContractPage from './pages/CreateContractPage'
 import ContractsPage from './pages/ContractsPage'
 import AdminPage from './pages/AdminPage'
+import PropertyDetailPage from './pages/PropertyDetailPage'
 import PaymentModal from './components/PaymentModal'
 import CertificateModal from './components/CertificateModal'
 
@@ -264,6 +265,9 @@ function App() {
               onPayment={openPaymentModal}
               onCreateContract={navigateToContract}
             />
+          } />
+          <Route path="/properties/:id" element={
+            <PropertyDetailPage properties={properties} />
           } />
           <Route path="/add" element={<AddPropertyPage />} />
           <Route path="/create-contract" element={

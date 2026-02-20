@@ -3,8 +3,10 @@ import {
   Bed,
   Bath,
   Maximize,
-  MessageCircle
+  MessageCircle,
+  Eye
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 function PropertyCard({ property }) {
   const formatPrice = (price, type) => {
@@ -95,18 +97,36 @@ function PropertyCard({ property }) {
         </div>
 
         {/* السعر */}
-        <div className="text-xl font-bold text-gold-400 mb-4">
+        <div className="text-xl font-bold text-gold-400 mb-2">
           {formatPrice(property.price, property.type)}
         </div>
 
-        {/* زر التواصل */}
-        <button
-          onClick={handleWhatsApp}
-          className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-colors font-medium"
-        >
-          <MessageCircle className="w-5 h-5" />
-          <span>تواصل واتساب</span>
-        </button>
+        {/* وصف مختصر */}
+        {property.description && (
+          <p className="text-gray-400 text-sm mb-4 leading-relaxed line-clamp-2">
+            {property.description.length > 100
+              ? property.description.slice(0, 100) + '...'
+              : property.description}
+          </p>
+        )}
+
+        {/* أزرار */}
+        <div className="flex gap-2">
+          <button
+            onClick={handleWhatsApp}
+            className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 px-3 rounded-lg transition-colors font-medium text-sm"
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span>واتساب</span>
+          </button>
+          <Link
+            to={`/properties/${property.id}`}
+            className="flex-1 flex items-center justify-center gap-2 bg-primary-700 hover:bg-primary-600 text-gold-400 py-3 px-3 rounded-lg transition-colors font-medium text-sm border border-gold-500/30"
+          >
+            <Eye className="w-4 h-4" />
+            <span>التفاصيل</span>
+          </Link>
+        </div>
       </div>
     </div>
   )
