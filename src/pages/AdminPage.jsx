@@ -181,15 +181,12 @@ function ImageUploader({ currentUrl, onUpload, onUploadingChange }) {
   )
 }
 
-function AdminPage() {
+function AdminPage({ properties, onAdd, onUpdate, onDelete }) {
   // حالة تسجيل الدخول
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loginError, setLoginError] = useState('')
-
-  // العقارات
-  const [properties, setProperties] = useState([])
 
   // نموذج الإضافة/التعديل
   const [showEditModal, setShowEditModal] = useState(false)
@@ -234,18 +231,6 @@ function AdminPage() {
     { value: 'commercial', label: 'تجاري' }
   ]
 
-  // تحميل العقارات من localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('properties')
-    if (saved) {
-      try {
-        setProperties(JSON.parse(saved))
-      } catch (e) {
-        console.error('Error loading properties:', e)
-      }
-    }
-  }, [])
-
   // التحقق من حالة الدخول
   useEffect(() => {
     const loggedIn = sessionStorage.getItem('adminLoggedIn')
@@ -253,14 +238,6 @@ function AdminPage() {
       setIsLoggedIn(true)
     }
   }, [])
-
-  // حفظ العقارات في localStorage
-  const saveProperties = (newProperties) => {
-    localStorage.setItem('properties', JSON.stringify(newProperties))
-    setProperties(newProperties)
-    // إشعار App.jsx بالتغيير في نفس التبويب
-    window.dispatchEvent(new CustomEvent('propertiesChanged'))
-  }
 
   // تسجيل الدخول
   const handleLogin = (e) => {
@@ -335,8 +312,7 @@ function AdminPage() {
       createdAt: new Date().toISOString()
     }
 
-    const newProperties = [...properties, newProperty]
-    saveProperties(newProperties)
+    onAdd(newProperty)
     resetForm()
     setSuccessMessage('تم إضافة العقار بنجاح')
     setTimeout(() => setSuccessMessage(''), 3000)
@@ -383,10 +359,7 @@ function AdminPage() {
       type: formData.purpose
     }
 
-    const newProperties = properties.map(p =>
-      p.id === editingProperty.id ? updatedProperty : p
-    )
-    saveProperties(newProperties)
+    onUpdate(updatedProperty)
     resetForm()
     setSuccessMessage('تم تحديث العقار بنجاح')
     setTimeout(() => setSuccessMessage(''), 3000)
@@ -395,8 +368,7 @@ function AdminPage() {
   // حذف عقار
   const handleDelete = (id) => {
     if (window.confirm('هل أنت متأكد من حذف هذا العقار؟')) {
-      const newProperties = properties.filter(p => p.id !== id)
-      saveProperties(newProperties)
+      onDelete(id)
       setSuccessMessage('تم حذف العقار بنجاح')
       setTimeout(() => setSuccessMessage(''), 3000)
     }

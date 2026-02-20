@@ -79,64 +79,34 @@ function App() {
     saveProperties(properties)
   }, [properties])
 
-  // الاستماع لتغييرات localStorage من صفحة الإدارة
+  // مزامنة العقارات مع تبويبات أخرى (اختياري)
   useEffect(() => {
-    const handleStorageChange = () => {
-      const saved = localStorage.getItem('properties')
-      if (saved) {
+    const handleStorageChange = (e) => {
+      if (e.key === 'properties' && e.newValue) {
         try {
-          setProperties(JSON.parse(saved))
-        } catch (e) {
-          console.error('Error parsing properties:', e)
+          setProperties(JSON.parse(e.newValue))
+        } catch (err) {
+          console.error('Error parsing properties:', err)
         }
       }
     }
-
     window.addEventListener('storage', handleStorageChange)
-
-    // الاستماع للتغييرات من AdminPage في نفس التبويب
-    window.addEventListener('propertiesChanged', handleStorageChange)
-
-    // أيضاً نتحقق عند التركيز على النافذة
-    const handleFocus = () => {
-      const saved = localStorage.getItem('properties')
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved)
-          setProperties(parsed)
-        } catch (e) {
-          console.error('Error parsing properties:', e)
-        }
-      }
-    }
-
-    window.addEventListener('focus', handleFocus)
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange)
-      window.removeEventListener('propertiesChanged', handleStorageChange)
-      window.removeEventListener('focus', handleFocus)
-    }
+    return () => window.removeEventListener('storage', handleStorageChange)
   }, [])
 
-  // دوال إدارة العقارات (للمدير فقط)
-  const addProperty = (property) => {
-    const newProperty = {
-      ...property,
-      id: Date.now(),
-      image: property.image || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop'
-    }
-    setProperties([...properties, newProperty])
+  // دوال إدارة العقارات — تُمرَّر لـ AdminPage مباشرة
+  const addProperty = (newProperty) => {
+    setProperties(prev => [...prev, newProperty])
   }
 
   const updateProperty = (updatedProperty) => {
-    setProperties(properties.map(p =>
+    setProperties(prev => prev.map(p =>
       p.id === updatedProperty.id ? updatedProperty : p
     ))
   }
 
   const deleteProperty = (id) => {
-    setProperties(properties.filter(p => p.id !== id))
+    setProperties(prev => prev.filter(p => p.id !== id))
   }
 
   // دوال إدارة العقود
@@ -196,7 +166,14 @@ function App() {
             />
           } />
           <Route path="/contracts" element={<ContractsPage contracts={contracts} />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin" element={
+            <AdminPage
+              properties={properties}
+              onAdd={addProperty}
+              onUpdate={updateProperty}
+              onDelete={deleteProperty}
+            />
+          } />
         </Routes>
       </main>
 
