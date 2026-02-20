@@ -3,8 +3,6 @@ import {
   Bed,
   Bath,
   Maximize,
-  Home,
-  Building,
   MessageCircle
 } from 'lucide-react'
 
@@ -66,17 +64,7 @@ function PropertyCard({ property }) {
                 : 'bg-primary-700 text-gold-400 border border-gold-500/30'
             }`}
           >
-            {property.category === 'residential' ? (
-              <>
-                <Home className="w-3 h-3" />
-                سكني
-              </>
-            ) : (
-              <>
-                <Building className="w-3 h-3" />
-                تجاري
-              </>
-            )}
+            {property.category === 'residential' ? 'سكني' : 'تجاري'}
           </span>
         </div>
       </div>

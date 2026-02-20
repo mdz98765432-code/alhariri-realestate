@@ -93,7 +93,7 @@ function PropertiesPage({ properties }) {
           <p className="text-gray-400">
             {searchTerm || filterType !== 'all' || filterCategory !== 'all'
               ? 'لا توجد نتائج تطابق معايير البحث'
-              : 'لم يتم إضافة أي عقارات بعد'}
+              : 'لا توجد عقارات متاحة حالياً'}
           </p>
         </div>
       )}

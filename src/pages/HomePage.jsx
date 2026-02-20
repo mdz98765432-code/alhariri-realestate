@@ -349,7 +349,7 @@ function HomePage({ properties, onPayment, onCreateContract }) {
           ) : (
             <div className="text-center py-12 bg-primary-700 rounded-2xl border border-gold-500/20">
               <Building2 className="w-16 h-16 text-gold-500 mx-auto mb-4" />
-              <p className="text-gray-400 text-lg">لا توجد عقارات حالياً</p>
+              <p className="text-gray-400 text-lg">لا توجد عقارات متاحة حالياً</p>
               <Link
                 to="/add"
                 className="mt-4 text-gold-500 hover:text-gold-400 font-medium inline-block"

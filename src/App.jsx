@@ -31,49 +31,27 @@ const WhatsAppFloatingButton = () => {
   )
 }
 
-// البيانات الافتراضية
-const defaultProperties = [
-  {
-    id: 1,
-    title: 'شقة فاخرة في حي الروضة',
-    location: 'حي الروضة، الرياض',
-    price: 3500,
-    type: 'rent',
-    category: 'residential',
-    bedrooms: 3,
-    bathrooms: 2,
-    area: 180,
-    description: 'شقة فاخرة مجددة بالكامل في موقع متميز، قريبة من جميع الخدمات. تتميز بإطلالة رائعة وتشطيبات عالية الجودة.',
-    image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop'
-  },
-  {
-    id: 2,
-    title: 'فيلا عصرية في الحمراء',
-    location: 'حي الحمراء، جدة',
-    price: 2500000,
-    type: 'sale',
-    category: 'residential',
-    bedrooms: 5,
-    bathrooms: 4,
-    area: 450,
-    description: 'فيلا عصرية فاخرة بتصميم معماري حديث، حديقة خاصة ومسبح. تقع في حي راقٍ وهادئ مع جميع الخدمات.',
-    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&h=600&fit=crop'
-  }
-]
+// معرّفات العقارات الافتراضية القديمة لحذفها
+const OLD_DEFAULT_IDS = [1, 2]
 
 // دالة لتحميل العقارات من localStorage
 const loadProperties = () => {
   try {
     const saved = localStorage.getItem('properties')
     if (saved) {
-      return JSON.parse(saved)
+      const parsed = JSON.parse(saved)
+      // حذف العقارات الافتراضية القديمة إن وُجدت
+      const cleaned = parsed.filter(p => !OLD_DEFAULT_IDS.includes(p.id))
+      if (cleaned.length !== parsed.length) {
+        localStorage.setItem('properties', JSON.stringify(cleaned))
+      }
+      return cleaned
     }
   } catch (error) {
     console.error('Error loading properties:', error)
   }
-  // إذا لم توجد عقارات، احفظ الافتراضية
-  localStorage.setItem('properties', JSON.stringify(defaultProperties))
-  return defaultProperties
+  localStorage.setItem('properties', JSON.stringify([]))
+  return []
 }
 
 // دالة لحفظ العقارات في localStorage
