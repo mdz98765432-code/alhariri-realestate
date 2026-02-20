@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Lock,
@@ -15,8 +15,168 @@ import {
   Home,
   Phone,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Upload,
+  ImageIcon,
+  Loader2
 } from 'lucide-react'
+
+const IMGBB_API_KEY = import.meta.env.VITE_IMGBB_API_KEY
+
+// مكوّن رفع الصورة — يُستخدم في نموذج الإضافة والتعديل
+function ImageUploader({ currentUrl, onUpload }) {
+  const [uploading, setUploading] = useState(false)
+  const [preview, setPreview] = useState(currentUrl || '')
+  const [error, setError] = useState('')
+  const inputRef = useRef(null)
+
+  // مزامنة المعاينة عند تغيير currentUrl (عند فتح التعديل)
+  useEffect(() => {
+    setPreview(currentUrl || '')
+    setError('')
+  }, [currentUrl])
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    // التحقق من نوع الملف
+    if (!file.type.startsWith('image/')) {
+      setError('يرجى اختيار ملف صورة صالح')
+      return
+    }
+
+    // التحقق من الحجم (أقصى 10 ميجابايت)
+    if (file.size > 10 * 1024 * 1024) {
+      setError('حجم الصورة يجب أن يكون أقل من 10 ميجابايت')
+      return
+    }
+
+    setError('')
+
+    // معاينة فورية قبل الرفع
+    const reader = new FileReader()
+    reader.onload = (ev) => setPreview(ev.target.result)
+    reader.readAsDataURL(file)
+
+    // رفع الصورة إلى ImgBB
+    setUploading(true)
+    try {
+      const data = new FormData()
+      data.append('key', IMGBB_API_KEY)
+      data.append('image', file)
+
+      const res = await fetch('https://api.imgbb.com/1/upload', {
+        method: 'POST',
+        body: data
+      })
+      const json = await res.json()
+
+      if (json.success) {
+        onUpload(json.data.url)
+      } else {
+        setError('فشل رفع الصورة، يرجى المحاولة مرة أخرى')
+        setPreview(currentUrl || '')
+      }
+    } catch {
+      setError('حدث خطأ أثناء الاتصال، تحقق من اتصالك بالإنترنت')
+      setPreview(currentUrl || '')
+    } finally {
+      setUploading(false)
+      // إعادة تعيين الـ input لقبول نفس الملف مجدداً إن احتاج
+      if (inputRef.current) inputRef.current.value = ''
+    }
+  }
+
+  return (
+    <div>
+      {/* منطقة العرض والرفع */}
+      <div
+        onClick={() => !uploading && inputRef.current?.click()}
+        className={`relative border-2 border-dashed rounded-xl overflow-hidden transition-colors cursor-pointer
+          ${uploading ? 'cursor-wait border-yellow-300 bg-yellow-50' : 'border-gray-300 hover:border-yellow-500 bg-gray-50'}`}
+        style={{ minHeight: '160px' }}
+      >
+        {preview ? (
+          <>
+            <img
+              src={preview}
+              alt="معاينة الصورة"
+              className="w-full h-40 object-cover"
+            />
+            {/* طبقة التغطية عند التحميل */}
+            {uploading && (
+              <div className="absolute inset-0 bg-white/70 flex flex-col items-center justify-center gap-2">
+                <Loader2 className="w-8 h-8 text-yellow-500 animate-spin" />
+                <span className="text-sm text-gray-600 font-medium">جاري رفع الصورة...</span>
+              </div>
+            )}
+            {/* زر التغيير */}
+            {!uploading && (
+              <div className="absolute inset-0 bg-black/0 hover:bg-black/40 transition-all flex items-center justify-center opacity-0 hover:opacity-100">
+                <span className="bg-white text-gray-800 text-sm font-bold px-4 py-2 rounded-lg flex items-center gap-2 shadow">
+                  <Upload className="w-4 h-4" />
+                  تغيير الصورة
+                </span>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-40 gap-3 text-gray-400">
+            {uploading ? (
+              <>
+                <Loader2 className="w-10 h-10 text-yellow-500 animate-spin" />
+                <span className="text-sm font-medium text-gray-600">جاري رفع الصورة...</span>
+              </>
+            ) : (
+              <>
+                <ImageIcon className="w-10 h-10" />
+                <span className="text-sm">اضغط لاختيار صورة من جهازك</span>
+                <span className="text-xs text-gray-300">JPG, PNG, WEBP — حتى 10 ميجابايت</span>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* زر الرفع */}
+      <button
+        type="button"
+        onClick={() => !uploading && inputRef.current?.click()}
+        disabled={uploading}
+        className="mt-2 w-full flex items-center justify-center gap-2 border-2 border-yellow-500 text-yellow-600 hover:bg-yellow-50 disabled:opacity-50 disabled:cursor-wait font-medium py-2 px-4 rounded-xl transition-colors text-sm"
+      >
+        {uploading ? (
+          <><Loader2 className="w-4 h-4 animate-spin" />جاري الرفع...</>
+        ) : (
+          <><Upload className="w-4 h-4" />{preview ? 'تغيير الصورة' : 'رفع صورة من الجهاز'}</>
+        )}
+      </button>
+
+      {/* رسالة الخطأ */}
+      {error && (
+        <p className="mt-2 text-red-500 text-xs flex items-center gap-1">
+          <AlertCircle className="w-3.5 h-3.5" />
+          {error}
+        </p>
+      )}
+
+      {/* رابط الصورة الحالي (للعرض فقط) */}
+      {!uploading && !error && currentUrl && (
+        <p className="mt-1 text-gray-400 text-xs truncate" dir="ltr">{currentUrl}</p>
+      )}
+
+      {/* input مخفي */}
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="hidden"
+      />
+    </div>
+  )
+}
 
 function AdminPage() {
   // حالة تسجيل الدخول
@@ -119,6 +279,11 @@ function AdminPage() {
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  // تحديث رابط الصورة بعد الرفع
+  const handleImageUploaded = (url) => {
+    setFormData(prev => ({ ...prev, image: url }))
   }
 
   // إعادة تعيين النموذج
@@ -515,17 +680,20 @@ function AdminPage() {
                 />
               </div>
 
-              {/* رابط الصورة */}
+              {/* رفع الصورة */}
               <div className="lg:col-span-2">
-                <label className="block text-gray-700 text-sm font-medium mb-2">رابط الصورة</label>
-                <input
-                  type="url"
-                  name="image"
-                  value={formData.image}
-                  onChange={handleChange}
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-yellow-500 transition-colors"
-                  placeholder="https://example.com/image.jpg"
-                  dir="ltr"
+                <label className="block text-gray-700 text-sm font-medium mb-2">
+                  صورة العقار
+                  {formData.image && (
+                    <span className="mr-2 text-green-600 text-xs font-normal flex items-center gap-1 inline-flex">
+                      <CheckCircle className="w-3.5 h-3.5" />
+                      تم رفع الصورة
+                    </span>
+                  )}
+                </label>
+                <ImageUploader
+                  currentUrl={formData.image}
+                  onUpload={handleImageUploaded}
                 />
               </div>
             </div>
@@ -798,16 +966,20 @@ function AdminPage() {
                   />
                 </div>
 
-                {/* رابط الصورة */}
+                {/* رفع الصورة - في نموذج التعديل */}
                 <div className="md:col-span-2">
-                  <label className="block text-gray-700 text-sm font-medium mb-2">رابط الصورة</label>
-                  <input
-                    type="url"
-                    name="image"
-                    value={formData.image}
-                    onChange={handleChange}
-                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-yellow-500"
-                    dir="ltr"
+                  <label className="block text-gray-700 text-sm font-medium mb-2">
+                    صورة العقار
+                    {formData.image && (
+                      <span className="mr-2 text-green-600 text-xs font-normal flex items-center gap-1 inline-flex">
+                        <CheckCircle className="w-3.5 h-3.5" />
+                        تم رفع الصورة
+                      </span>
+                    )}
+                  </label>
+                  <ImageUploader
+                    currentUrl={formData.image}
+                    onUpload={handleImageUploaded}
                   />
                 </div>
 
