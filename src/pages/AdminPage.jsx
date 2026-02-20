@@ -254,6 +254,8 @@ function AdminPage() {
   const saveProperties = (newProperties) => {
     localStorage.setItem('properties', JSON.stringify(newProperties))
     setProperties(newProperties)
+    // إشعار App.jsx بالتغيير في نفس التبويب
+    window.dispatchEvent(new CustomEvent('propertiesChanged'))
   }
 
   // تسجيل الدخول

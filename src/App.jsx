@@ -94,6 +94,9 @@ function App() {
 
     window.addEventListener('storage', handleStorageChange)
 
+    // الاستماع للتغييرات من AdminPage في نفس التبويب
+    window.addEventListener('propertiesChanged', handleStorageChange)
+
     // أيضاً نتحقق عند التركيز على النافذة
     const handleFocus = () => {
       const saved = localStorage.getItem('properties')
@@ -111,6 +114,7 @@ function App() {
 
     return () => {
       window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('propertiesChanged', handleStorageChange)
       window.removeEventListener('focus', handleFocus)
     }
   }, [])

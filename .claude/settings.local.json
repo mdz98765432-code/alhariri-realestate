@@ -27,7 +27,9 @@
       "Bash(git remote set-url:*)",
       "Bash(GIT_ASKPASS=echo git push -u origin main)",
       "Bash(npm install:*)",
-      "Bash(start:*)"
+      "Bash(start:*)",
+      "Bash(npx vercel env add:*)",
+      "Bash(npx vercel:*)"
     ]
   }
 }
