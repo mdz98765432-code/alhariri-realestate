@@ -24,7 +24,7 @@ import {
 const IMGBB_API_KEY = import.meta.env.VITE_IMGBB_API_KEY
 
 // مكوّن رفع الصورة — يُستخدم في نموذج الإضافة والتعديل
-function ImageUploader({ currentUrl, onUpload }) {
+function ImageUploader({ currentUrl, onUpload, onUploadingChange }) {
   const [uploading, setUploading] = useState(false)
   const [preview, setPreview] = useState(currentUrl || '')
   const [error, setError] = useState('')
@@ -59,8 +59,10 @@ function ImageUploader({ currentUrl, onUpload }) {
     reader.onload = (ev) => setPreview(ev.target.result)
     reader.readAsDataURL(file)
 
-    // رفع الصورة إلى ImgBB
+    // إخبار الأب ببدء الرفع (لتعطيل زر الحفظ)
     setUploading(true)
+    onUploadingChange?.(true)
+
     try {
       const data = new FormData()
       data.append('key', IMGBB_API_KEY)
@@ -83,6 +85,7 @@ function ImageUploader({ currentUrl, onUpload }) {
       setPreview(currentUrl || '')
     } finally {
       setUploading(false)
+      onUploadingChange?.(false)
       // إعادة تعيين الـ input لقبول نفس الملف مجدداً إن احتاج
       if (inputRef.current) inputRef.current.value = ''
     }
@@ -192,6 +195,7 @@ function AdminPage() {
   const [showEditModal, setShowEditModal] = useState(false)
   const [editingProperty, setEditingProperty] = useState(null)
   const [successMessage, setSuccessMessage] = useState('')
+  const [isImageUploading, setIsImageUploading] = useState(false)
 
   const [formData, setFormData] = useState({
     title: '',
@@ -696,6 +700,7 @@ function AdminPage() {
                 <ImageUploader
                   currentUrl={formData.image}
                   onUpload={handleImageUploaded}
+                  onUploadingChange={setIsImageUploading}
                 />
               </div>
             </div>
@@ -716,10 +721,14 @@ function AdminPage() {
             {/* زر الإضافة */}
             <button
               type="submit"
-              className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl transition-colors flex items-center gap-2"
+              disabled={isImageUploading}
+              className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-8 rounded-xl transition-colors flex items-center gap-2"
             >
-              <Plus className="w-5 h-5" />
-              إضافة العقار
+              {isImageUploading ? (
+                <><Loader2 className="w-5 h-5 animate-spin" />جاري رفع الصورة...</>
+              ) : (
+                <><Plus className="w-5 h-5" />إضافة العقار</>
+              )}
             </button>
           </form>
         </div>
@@ -749,11 +758,21 @@ function AdminPage() {
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-3">
                           <img
-                            src={property.image}
+                            src={property.image || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&h=200&fit=crop'}
                             alt={property.title}
-                            className="w-12 h-12 rounded-lg object-cover"
+                            className="w-14 h-14 rounded-lg object-cover flex-shrink-0 bg-gray-100"
+                            onError={(e) => {
+                              e.target.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&h=200&fit=crop'
+                            }}
                           />
-                          <span className="font-medium text-gray-800">{property.title}</span>
+                          <div className="min-w-0">
+                            <div className="font-medium text-gray-800">{property.title}</div>
+                            {property.description && (
+                              <div className="text-xs text-gray-400 mt-0.5 truncate max-w-xs">
+                                {property.description}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </td>
                       <td className="py-4 px-4 text-gray-600">
@@ -982,6 +1001,7 @@ function AdminPage() {
                   <ImageUploader
                     currentUrl={formData.image}
                     onUpload={handleImageUploaded}
+                    onUploadingChange={setIsImageUploading}
                   />
                 </div>
 
@@ -1002,10 +1022,14 @@ function AdminPage() {
               <div className="flex gap-3 pt-4 border-t border-gray-200">
                 <button
                   type="submit"
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-colors flex items-center justify-center gap-2"
+                  disabled={isImageUploading}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl transition-colors flex items-center justify-center gap-2"
                 >
-                  <Save className="w-5 h-5" />
-                  حفظ التعديلات
+                  {isImageUploading ? (
+                    <><Loader2 className="w-5 h-5 animate-spin" />جاري رفع الصورة...</>
+                  ) : (
+                    <><Save className="w-5 h-5" />حفظ التعديلات</>
+                  )}
                 </button>
                 <button
                   type="button"
