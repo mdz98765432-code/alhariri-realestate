@@ -38,16 +38,16 @@ function HomePage({ properties, onPayment, onCreateContract }) {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-900 via-primary-950 to-primary-900 text-white py-20 border-b border-gold-500/20">
+      <section className="bg-white text-gray-800 py-20 border-b border-gold-500/20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-2 text-gold-400">
+            <h1 className="text-4xl md:text-5xl font-bold mb-2 text-gold-500">
               DAR ALHARIRI REAL ESTATE
             </h1>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
               دار الحريري العقارية
             </h2>
-            <p className="text-xl text-gray-400 mb-8 leading-relaxed">
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
               حلول متكاملة للعقارات السكنية والتجارية
               مع عقود إلكترونية موثقة وتسويق عقاري احترافي
             </p>
@@ -60,7 +60,7 @@ function HomePage({ properties, onPayment, onCreateContract }) {
               </Link>
               <Link
                 to="/add"
-                className="bg-primary-700 hover:bg-primary-600 text-gold-400 px-8 py-3 rounded-xl font-bold transition-all border border-gold-500/30"
+                className="bg-white hover:bg-gray-50 text-gold-600 px-8 py-3 rounded-xl font-bold transition-all border border-gold-500/50 shadow-sm"
               >
                 إضافة عقار جديد
               </Link>
@@ -70,9 +70,9 @@ function HomePage({ properties, onPayment, onCreateContract }) {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-primary-900">
+      <section className="py-16 bg-[#F8F8F8]">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gold-400 mb-12">
+          <h2 className="text-3xl font-bold text-center text-gold-500 mb-12">
             مميزات المنصة
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -81,13 +81,13 @@ function HomePage({ properties, onPayment, onCreateContract }) {
               return (
                 <div
                   key={index}
-                  className="bg-primary-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all text-center border border-gold-500/20 hover:border-gold-500/40"
+                  className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-all text-center border border-gold-500/20 hover:border-gold-500/40"
                 >
                   <div className="bg-gold-500 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
                     <Icon className="w-8 h-8 text-black" />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                  <p className="text-gray-400 leading-relaxed">{feature.description}</p>
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">{feature.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
                 </div>
               )
             })}
@@ -157,18 +157,18 @@ function HomePage({ properties, onPayment, onCreateContract }) {
       </section>
 
       {/* Licenses & Certifications Section */}
-      <section className="py-16 bg-primary-800 border-t border-gold-500/20">
+      <section className="py-16 bg-[#F8F8F8] border-t border-gold-500/20">
         <div className="container mx-auto px-4">
           {/* Section Header */}
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 bg-gold-500/10 px-4 py-2 rounded-full mb-4">
-              <Shield className="w-5 h-5 text-gold-400" />
-              <span className="text-gold-400 font-medium">موثوق ومعتمد</span>
+              <Shield className="w-5 h-5 text-gold-500" />
+              <span className="text-gold-600 font-medium">موثوق ومعتمد</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gold-400 mb-3">
+            <h2 className="text-3xl md:text-4xl font-bold text-gold-500 mb-3">
               مرخص ومعتمد رسمياً
             </h2>
-            <p className="text-gray-400 text-lg">
+            <p className="text-gray-600 text-lg">
               نعمل وفق الأنظمة والتشريعات السعودية
             </p>
           </div>
@@ -180,13 +180,13 @@ function HomePage({ properties, onPayment, onCreateContract }) {
             <div className="group">
               <div
                 onClick={() => setSelectedImage({ src: '/fal-license.pdf', title: 'رخصة فال العقارية', isPdf: true })}
-                className="cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-primary-700 to-primary-800 p-3"
+                className="cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] bg-white p-3 shadow-sm"
                 style={{
-                  boxShadow: '0 0 0 3px #D4AF37, 0 0 20px rgba(212, 175, 55, 0.3), 0 10px 40px rgba(0,0,0,0.3)'
+                  boxShadow: '0 0 0 3px #D4AF37, 0 0 20px rgba(212, 175, 55, 0.2), 0 10px 40px rgba(0,0,0,0.08)'
                 }}
               >
                 {/* PDF Preview Image */}
-                <div className="aspect-[3/4] bg-white rounded-xl overflow-hidden relative">
+                <div className="aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden relative">
                   <Document file="/fal-license.pdf" loading={
                     <div className="w-full h-full flex items-center justify-center bg-gray-100">
                       <div className="animate-pulse text-gray-400">جاري التحميل...</div>
@@ -216,8 +216,8 @@ function HomePage({ properties, onPayment, onCreateContract }) {
               </div>
               {/* License Name & Status */}
               <div className="mt-5 text-center">
-                <h4 className="text-lg font-bold text-white mb-2">رخصة فال العقارية</h4>
-                <div className="inline-flex items-center gap-2 bg-success-500/20 text-success-400 px-4 py-1.5 rounded-full text-sm font-medium">
+                <h4 className="text-lg font-bold text-gray-800 mb-2">رخصة فال العقارية</h4>
+                <div className="inline-flex items-center gap-2 bg-success-500/20 text-success-600 px-4 py-1.5 rounded-full text-sm font-medium">
                   <CheckCircle className="w-4 h-4" />
                   <span>سارية</span>
                 </div>
@@ -228,13 +228,13 @@ function HomePage({ properties, onPayment, onCreateContract }) {
             <div className="group">
               <div
                 onClick={() => setSelectedImage({ src: '/freelance-certificate.pdf', title: 'وثيقة العمل الحر', isPdf: true })}
-                className="cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-primary-700 to-primary-800 p-3"
+                className="cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] bg-white p-3 shadow-sm"
                 style={{
-                  boxShadow: '0 0 0 3px #D4AF37, 0 0 20px rgba(212, 175, 55, 0.3), 0 10px 40px rgba(0,0,0,0.3)'
+                  boxShadow: '0 0 0 3px #D4AF37, 0 0 20px rgba(212, 175, 55, 0.2), 0 10px 40px rgba(0,0,0,0.08)'
                 }}
               >
                 {/* PDF Preview Image - Rotated 90deg and scaled to fill */}
-                <div className="aspect-[3/4] bg-white rounded-xl overflow-hidden relative flex items-center justify-center">
+                <div className="aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden relative flex items-center justify-center">
                   <div style={{
                     transform: 'rotate(-90deg) scale(1.4)',
                     transformOrigin: 'center center',
@@ -269,8 +269,8 @@ function HomePage({ properties, onPayment, onCreateContract }) {
               </div>
               {/* License Name & Status */}
               <div className="mt-5 text-center">
-                <h4 className="text-lg font-bold text-white mb-2">وثيقة العمل الحر</h4>
-                <div className="inline-flex items-center gap-2 bg-success-500/20 text-success-400 px-4 py-1.5 rounded-full text-sm font-medium">
+                <h4 className="text-lg font-bold text-gray-800 mb-2">وثيقة العمل الحر</h4>
+                <div className="inline-flex items-center gap-2 bg-success-500/20 text-success-600 px-4 py-1.5 rounded-full text-sm font-medium">
                   <CheckCircle className="w-4 h-4" />
                   <span>سارية</span>
                 </div>
@@ -281,7 +281,7 @@ function HomePage({ properties, onPayment, onCreateContract }) {
 
           {/* Trust Badge */}
           <div className="mt-10 text-center">
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-400 text-sm">
               اضغط على البطاقة لعرض الرخصة كاملة • يمكن التحقق من صحة الرخص عبر المواقع الرسمية للجهات المختصة
             </p>
           </div>
@@ -291,12 +291,12 @@ function HomePage({ properties, onPayment, onCreateContract }) {
       {/* PDF/Image Lightbox Modal */}
       {selectedImage && (
         <div
-          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 animate-fadeIn"
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fadeIn"
           onClick={() => setSelectedImage(null)}
         >
           <button
             onClick={() => setSelectedImage(null)}
-            className="absolute top-4 right-4 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            className="absolute top-4 right-4 z-10 p-3 bg-white/20 hover:bg-white/30 rounded-full transition-colors"
           >
             <X className="w-6 h-6 text-white" />
           </button>
@@ -320,13 +320,13 @@ function HomePage({ properties, onPayment, onCreateContract }) {
       )}
 
       {/* Latest Properties Section */}
-      <section className="py-16 bg-primary-900">
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gold-400">أحدث العقارات</h2>
+            <h2 className="text-3xl font-bold text-gold-500">أحدث العقارات</h2>
             <Link
               to="/properties"
-              className="text-gold-500 hover:text-gold-400 font-medium flex items-center gap-2"
+              className="text-gold-500 hover:text-gold-600 font-medium flex items-center gap-2"
             >
               <span>عرض الكل</span>
             </Link>
@@ -347,12 +347,12 @@ function HomePage({ properties, onPayment, onCreateContract }) {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 bg-primary-700 rounded-2xl border border-gold-500/20">
+            <div className="text-center py-12 bg-gray-50 rounded-2xl border border-gold-500/20">
               <Building2 className="w-16 h-16 text-gold-500 mx-auto mb-4" />
-              <p className="text-gray-400 text-lg">لا توجد عقارات متاحة حالياً</p>
+              <p className="text-gray-600 text-lg">لا توجد عقارات متاحة حالياً</p>
               <Link
                 to="/add"
-                className="mt-4 text-gold-500 hover:text-gold-400 font-medium inline-block"
+                className="mt-4 text-gold-500 hover:text-gold-600 font-medium inline-block"
               >
                 إضافة عقار جديد
               </Link>
@@ -362,24 +362,24 @@ function HomePage({ properties, onPayment, onCreateContract }) {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-primary-950 text-white py-16 border-t border-gold-500/20">
+      <section className="bg-[#F8F8F8] text-gray-800 py-16 border-t border-gold-500/20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold text-gold-400 mb-2">+500</div>
-              <div className="text-gray-400">عقار متاح</div>
+              <div className="text-4xl font-bold text-gold-500 mb-2">+500</div>
+              <div className="text-gray-600">عقار متاح</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-gold-400 mb-2">+1000</div>
-              <div className="text-gray-400">عميل راضٍ</div>
+              <div className="text-4xl font-bold text-gold-500 mb-2">+1000</div>
+              <div className="text-gray-600">عميل راضٍ</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-gold-400 mb-2">+300</div>
-              <div className="text-gray-400">عقد منجز</div>
+              <div className="text-4xl font-bold text-gold-500 mb-2">+300</div>
+              <div className="text-gray-600">عقد منجز</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-gold-400 mb-2">+10</div>
-              <div className="text-gray-400">سنوات خبرة</div>
+              <div className="text-4xl font-bold text-gold-500 mb-2">+10</div>
+              <div className="text-gray-600">سنوات خبرة</div>
             </div>
           </div>
         </div>

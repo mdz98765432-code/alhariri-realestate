@@ -20,12 +20,12 @@ function PropertiesPage({ properties }) {
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gold-400 mb-2">جميع العقارات</h1>
-        <p className="text-gray-400">تصفح العقارات المتاحة للإيجار والبيع</p>
+        <h1 className="text-3xl font-bold text-gold-500 mb-2">جميع العقارات</h1>
+        <p className="text-gray-600">تصفح العقارات المتاحة للإيجار والبيع</p>
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-primary-800 rounded-xl shadow-lg p-6 mb-8 border border-gold-500/20">
+      <div className="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search */}
           <div className="relative">
@@ -71,8 +71,8 @@ function PropertiesPage({ properties }) {
 
       {/* Properties Count */}
       <div className="mb-6">
-        <span className="text-gray-400">
-          عدد النتائج: <span className="font-bold text-gold-400">{filteredProperties.length}</span> عقار
+        <span className="text-gray-600">
+          عدد النتائج: <span className="font-bold text-gold-500">{filteredProperties.length}</span> عقار
         </span>
       </div>
 
@@ -87,10 +87,10 @@ function PropertiesPage({ properties }) {
           ))}
         </div>
       ) : (
-        <div className="text-center py-16 bg-primary-800 rounded-2xl border border-gold-500/20">
+        <div className="text-center py-16 bg-white rounded-2xl border border-gray-200">
           <Building2 className="w-20 h-20 text-gold-500 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-white mb-2">لا توجد عقارات</h3>
-          <p className="text-gray-400">
+          <h3 className="text-xl font-bold text-gray-800 mb-2">لا توجد عقارات</h3>
+          <p className="text-gray-600">
             {searchTerm || filterType !== 'all' || filterCategory !== 'all'
               ? 'لا توجد نتائج تطابق معايير البحث'
               : 'لا توجد عقارات متاحة حالياً'}

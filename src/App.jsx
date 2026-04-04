@@ -81,18 +81,18 @@ const SEED_PROPERTIES = [
 
 // مكون Skeleton لبطاقات العقارات أثناء التحميل
 const PropertySkeleton = () => (
-  <div className="bg-primary-800 rounded-xl overflow-hidden border border-primary-700 animate-pulse">
-    <div className="h-48 bg-primary-700" />
+  <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm animate-pulse">
+    <div className="h-48 bg-gray-200" />
     <div className="p-5 space-y-3">
-      <div className="h-4 bg-primary-700 rounded w-3/4" />
-      <div className="h-3 bg-primary-700 rounded w-1/2" />
+      <div className="h-4 bg-gray-200 rounded w-3/4" />
+      <div className="h-3 bg-gray-200 rounded w-1/2" />
       <div className="flex gap-4">
-        <div className="h-3 bg-primary-700 rounded w-16" />
-        <div className="h-3 bg-primary-700 rounded w-16" />
-        <div className="h-3 bg-primary-700 rounded w-16" />
+        <div className="h-3 bg-gray-200 rounded w-16" />
+        <div className="h-3 bg-gray-200 rounded w-16" />
+        <div className="h-3 bg-gray-200 rounded w-16" />
       </div>
-      <div className="h-5 bg-primary-700 rounded w-1/3" />
-      <div className="h-10 bg-primary-700 rounded" />
+      <div className="h-5 bg-gray-200 rounded w-1/3" />
+      <div className="h-10 bg-gray-200 rounded" />
     </div>
   </div>
 )
@@ -216,25 +216,25 @@ function App() {
   // Skeleton loader — يظهر هيكل الصفحة فوراً بدلاً من شاشة بيضاء
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col bg-primary-900">
+      <div className="min-h-screen flex flex-col bg-white">
         <Navbar />
         <main className="flex-grow">
           {/* Hero skeleton */}
-          <div className="bg-gradient-to-br from-primary-900 via-primary-950 to-primary-900 py-20 border-b border-gold-500/20 animate-pulse">
+          <div className="bg-gray-50 py-20 border-b border-gold-500/20 animate-pulse">
             <div className="container mx-auto px-4 max-w-3xl text-center space-y-4">
-              <div className="h-10 bg-primary-800 rounded-xl w-3/4 mx-auto" />
-              <div className="h-6 bg-primary-800 rounded-xl w-1/2 mx-auto" />
-              <div className="h-4 bg-primary-800 rounded w-2/3 mx-auto" />
+              <div className="h-10 bg-gray-200 rounded-xl w-3/4 mx-auto" />
+              <div className="h-6 bg-gray-200 rounded-xl w-1/2 mx-auto" />
+              <div className="h-4 bg-gray-200 rounded w-2/3 mx-auto" />
               <div className="flex justify-center gap-4 pt-2">
-                <div className="h-12 bg-primary-700 rounded-xl w-36" />
-                <div className="h-12 bg-primary-700 rounded-xl w-36" />
+                <div className="h-12 bg-gray-200 rounded-xl w-36" />
+                <div className="h-12 bg-gray-200 rounded-xl w-36" />
               </div>
             </div>
           </div>
           {/* Properties skeleton */}
-          <div className="py-16 bg-primary-900">
+          <div className="py-16 bg-white">
             <div className="container mx-auto px-4">
-              <div className="h-8 bg-primary-800 rounded w-48 mb-8 animate-pulse" />
+              <div className="h-8 bg-gray-200 rounded w-48 mb-8 animate-pulse" />
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[...Array(4)].map((_, i) => <PropertySkeleton key={i} />)}
               </div>
@@ -248,7 +248,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-primary-900">
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
       <main className="flex-grow">
         <Routes>

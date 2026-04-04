@@ -13,8 +13,8 @@ function PropertyDetailPage({ properties }) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
         <Building2 className="w-20 h-20 text-gold-500 mb-4" />
-        <h2 className="text-2xl font-bold text-white mb-2">العقار غير موجود</h2>
-        <p className="text-gray-400 mb-6">لم يتم العثور على هذا العقار</p>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">العقار غير موجود</h2>
+        <p className="text-gray-600 mb-6">لم يتم العثور على هذا العقار</p>
         <Link
           to="/properties"
           className="bg-gold-500 hover:bg-gold-600 text-black px-6 py-3 rounded-xl font-bold transition-colors"
@@ -53,14 +53,14 @@ function PropertyDetailPage({ properties }) {
       {/* زر الرجوع */}
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-gold-400 hover:text-gold-300 mb-6 transition-colors"
+        className="flex items-center gap-2 text-gold-500 hover:text-gold-600 mb-6 transition-colors"
       >
         <ArrowRight className="w-5 h-5" />
         <span>رجوع</span>
       </button>
 
       {/* صورة العقار */}
-      <div className="relative rounded-2xl overflow-hidden mb-8 h-72 md:h-96 bg-primary-800">
+      <div className="relative rounded-2xl overflow-hidden mb-8 h-72 md:h-96 bg-gray-100">
         <img
           src={property.image}
           alt={property.title}
@@ -72,7 +72,7 @@ function PropertyDetailPage({ properties }) {
           <span className={`px-3 py-1 rounded-full text-sm font-bold ${property.type === 'rent' ? 'bg-gold-500 text-black' : 'bg-green-500 text-white'}`}>
             {typeLabel}
           </span>
-          <span className="px-3 py-1 rounded-full text-sm font-bold bg-primary-700 text-gold-400 border border-gold-500/30">
+          <span className="px-3 py-1 rounded-full text-sm font-bold bg-white/90 text-gold-600 border border-gold-500/30">
             {categoryLabel}
           </span>
         </div>
@@ -82,41 +82,41 @@ function PropertyDetailPage({ properties }) {
         {/* العمود الرئيسي */}
         <div className="md:col-span-2 space-y-6">
           {/* العنوان والموقع */}
-          <div className="bg-primary-800 rounded-2xl p-6 border border-gold-500/20">
-            <h1 className="text-2xl md:text-3xl font-bold text-white mb-3">{property.title}</h1>
-            <div className="flex items-center gap-2 text-gray-400">
+          <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">{property.title}</h1>
+            <div className="flex items-center gap-2 text-gray-600">
               <MapPin className="w-5 h-5 text-gold-500 shrink-0" />
               <span>{property.location}</span>
             </div>
           </div>
 
           {/* المواصفات */}
-          <div className="bg-primary-800 rounded-2xl p-6 border border-gold-500/20">
-            <h2 className="text-lg font-bold text-gold-400 mb-4">مواصفات العقار</h2>
+          <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+            <h2 className="text-lg font-bold text-gold-500 mb-4">مواصفات العقار</h2>
             <div className="grid grid-cols-3 gap-4">
-              <div className="flex flex-col items-center gap-2 bg-primary-700 rounded-xl p-4">
+              <div className="flex flex-col items-center gap-2 bg-white rounded-xl p-4 border border-gray-100">
                 <Bed className="w-6 h-6 text-gold-500" />
-                <span className="text-2xl font-bold text-white">{property.bedrooms}</span>
-                <span className="text-gray-400 text-sm">غرف نوم</span>
+                <span className="text-2xl font-bold text-gray-800">{property.bedrooms}</span>
+                <span className="text-gray-500 text-sm">غرف نوم</span>
               </div>
-              <div className="flex flex-col items-center gap-2 bg-primary-700 rounded-xl p-4">
+              <div className="flex flex-col items-center gap-2 bg-white rounded-xl p-4 border border-gray-100">
                 <Bath className="w-6 h-6 text-gold-500" />
-                <span className="text-2xl font-bold text-white">{property.bathrooms}</span>
-                <span className="text-gray-400 text-sm">حمامات</span>
+                <span className="text-2xl font-bold text-gray-800">{property.bathrooms}</span>
+                <span className="text-gray-500 text-sm">حمامات</span>
               </div>
-              <div className="flex flex-col items-center gap-2 bg-primary-700 rounded-xl p-4">
+              <div className="flex flex-col items-center gap-2 bg-white rounded-xl p-4 border border-gray-100">
                 <Maximize className="w-6 h-6 text-gold-500" />
-                <span className="text-2xl font-bold text-white">{property.area}</span>
-                <span className="text-gray-400 text-sm">م²</span>
+                <span className="text-2xl font-bold text-gray-800">{property.area}</span>
+                <span className="text-gray-500 text-sm">م²</span>
               </div>
             </div>
           </div>
 
           {/* الوصف */}
           {property.description && (
-            <div className="bg-primary-800 rounded-2xl p-6 border border-gold-500/20">
-              <h2 className="text-lg font-bold text-gold-400 mb-4">وصف العقار</h2>
-              <p className="text-gray-300 leading-relaxed text-base whitespace-pre-line">
+            <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+              <h2 className="text-lg font-bold text-gold-500 mb-4">وصف العقار</h2>
+              <p className="text-gray-700 leading-relaxed text-base whitespace-pre-line">
                 {property.description}
               </p>
             </div>
@@ -126,20 +126,20 @@ function PropertyDetailPage({ properties }) {
         {/* العمود الجانبي */}
         <div className="space-y-4">
           {/* السعر */}
-          <div className="bg-primary-800 rounded-2xl p-6 border border-gold-500/20">
-            <p className="text-gray-400 text-sm mb-1">السعر</p>
-            <div className="text-2xl font-bold text-gold-400">
+          <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+            <p className="text-gray-500 text-sm mb-1">السعر</p>
+            <div className="text-2xl font-bold text-gold-500">
               {formatPrice(property.price, property.type)}
             </div>
           </div>
 
           {/* تفاصيل إضافية */}
-          <div className="bg-primary-800 rounded-2xl p-6 border border-gold-500/20 space-y-3">
-            <div className="flex items-center gap-3 text-gray-300">
+          <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-3">
+            <div className="flex items-center gap-3 text-gray-700">
               <Tag className="w-4 h-4 text-gold-500" />
               <span className="text-sm">{typeLabel}</span>
             </div>
-            <div className="flex items-center gap-3 text-gray-300">
+            <div className="flex items-center gap-3 text-gray-700">
               {property.category === 'residential'
                 ? <Home className="w-4 h-4 text-gold-500" />
                 : <Building2 className="w-4 h-4 text-gold-500" />
@@ -147,7 +147,7 @@ function PropertyDetailPage({ properties }) {
               <span className="text-sm">{categoryLabel}</span>
             </div>
             {property.createdAt && (
-              <div className="flex items-center gap-3 text-gray-300">
+              <div className="flex items-center gap-3 text-gray-700">
                 <Calendar className="w-4 h-4 text-gold-500" />
                 <span className="text-sm">
                   {new Date(property.createdAt).toLocaleDateString('ar-SA')}
